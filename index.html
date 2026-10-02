@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#070708" />
+  <title>Kara Kutu YouTube Akademisi · YouTube mentörlüğü ve kanal araçları</title>
+  <meta name="description" content="Yüzsüz ve belgesel YouTube kanalları için birebir mentörlük ve araçlar: Mentörlük Paneli, Channel Prompt ve Thumbnail Studio. Kanalını sistemle büyüt." />
+  <link rel="canonical" href="https://karakutuyoutube.com/" />
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="tr_TR" />
+  <meta property="og:site_name" content="Kara Kutu YouTube Akademisi" />
+  <meta property="og:title" content="Kara Kutu YouTube Akademisi" />
+  <meta property="og:description" content="Büyüyen kanalların sırrı şans değil, sistem. Birebir mentörlük ve YouTube için geliştirdiğimiz araçlar tek yerde." />
+  <meta property="og:url" content="https://karakutuyoutube.com/" />
+  <meta property="og:image" content="https://karakutuyoutube.com/assets/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Kara Kutu YouTube Akademisi" />
+  <meta name="twitter:description" content="Büyüyen kanalların sırrı şans değil, sistem. Birebir mentörlük ve YouTube için geliştirdiğimiz araçlar tek yerde." />
+  <meta name="twitter:image" content="https://karakutuyoutube.com/assets/og.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Kara Kutu YouTube Akademisi",
+    "url": "https://karakutuyoutube.com/",
+    "logo": "https://karakutuyoutube.com/assets/favicon.svg",
+    "description": "Türkçe YouTube içerik üreticileri için birebir mentörlük ve kanal büyütme araçları.",
+    "contactPoint": { "@type": "ContactPoint", "telephone": "+90-537-793-50-90", "contactType": "customer support", "availableLanguage": "Turkish" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/brand-kit/tokens.css" />
+  <link rel="stylesheet" href="/assets/site.css" />
+  <script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')</script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.7.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.8h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41"/></symbol></svg>
+  <!-- ============ SIGNATURE BACKGROUND (+ moving grid & particles) ============ -->
+  <div class="bg-fx" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <canvas class="bg-particles"></canvas>
+    <div class="bg-side bg-side-l"></div>
+    <div class="bg-side bg-side-r"></div>
+    <div class="bg-edge bg-edge-l"></div>
+    <div class="bg-edge bg-edge-r"></div>
+    <div class="bg-logo">
+      <svg viewBox="0 0 240 170" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="yt-fill" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="yt-s1" /><stop offset="1" class="yt-s2" /></linearGradient>
+          <linearGradient id="yt-stroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0" class="yt-s3" /><stop offset="0.5" class="yt-s4" /><stop offset="1" class="yt-s5" /></linearGradient>
+          <filter id="yt-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="44" /></filter>
+        </defs>
+        <rect class="yt-halo" x="14" y="14" width="212" height="142" rx="44" filter="url(#yt-blur)" />
+        <rect x="6" y="6" width="228" height="158" rx="46" fill="url(#yt-fill)" stroke="url(#yt-stroke)" stroke-width="1.5" />
+        <path class="yt-play" d="M98 52.5c0-3.2 3.5-5.2 6.3-3.6l52.4 30.3c2.8 1.6 2.8 5.6 0 7.2l-52.4 30.3c-2.8 1.6-6.3-.4-6.3-3.6z" />
+      </svg>
+    </div>
+  </div>
+
+  <!-- ============ NAV ============ -->
+  <header class="site-nav" id="top">
+    <div class="container">
+      <a class="brand" href="#top" aria-label="Kara Kutu YouTube Akademisi, sayfanın başı">
+        <span class="brand-mark"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
+        <span class="brand-text"><strong>Kara Kutu YouTube Akademisi</strong><span>Mentörlük &amp; sistemler</span></span>
+      </a>
+      <nav aria-label="Ana menü">
+        <a href="#sistemler">Sistemler</a>
+        <a href="#mentorluk">Mentörlük</a>
+        <a href="#sss">SSS</a>
+        <a class="btn btn-primary btn-sm" href="https://dashboard.karakutuyoutube.com">Panele giriş</a>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menüyü aç">
+          <span></span><span></span>
+        </button>
+      </nav>
+    </div>
+    <div class="nav-progress" aria-hidden="true"><i></i></div>
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <a href="#sistemler">Sistemler</a>
+      <a href="#mentorluk">Mentörlük</a>
+      <a href="#ekosistem">Ekosistem</a>
+      <a href="#sss">Sık sorulanlar</a>
+      <a class="btn btn-primary btn-block only-small" href="https://dashboard.karakutuyoutube.com">Panele giriş</a>
+      <a class="btn btn-wa btn-block" href="https://wa.me/905377935090?text=Merhaba%2C%20Kara%20Kutu%20YouTube%20Akademisi%20ment%C3%B6rl%C3%BCk%20program%C4%B1%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum.">WhatsApp’tan yaz</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ============ 1 · HERO ============ -->
+    <section class="scene scene-hero" data-scene="hero" style="--len:190vh">
+      <div class="sticky">
+        <div class="hero-box" data-k="box" aria-hidden="true"></div>
+        <div class="container hero-inner">
+          <div class="hero-content" data-k="content">
+            <span class="chip-outline">KARA KUTU YOUTUBE AKADEMİSİ</span>
+            <div class="giant" data-k="giant" aria-hidden="true"><span>KARA</span> <span>KUTU</span></div>
+            <h1 class="display hero-title">Büyüyen kanalların sırrı şans değil, <span class="grad-text">sistem.</span></h1>
+            <p class="lead hero-lead">Birebir mentörlük ve YouTube için geliştirdiğimiz araçlar tek yerde. Yüzsüz ve belgesel kanallar için; ilk videondan para kazandığın güne kadar.</p>
+            <div class="hero-cta">
+              <a class="btn btn-primary btn-lg" href="#thumbnail">Sistemleri keşfet</a>
+              <a class="btn btn-ghost btn-lg" href="https://dashboard.karakutuyoutube.com">Panele giriş</a>
+            </div>
+          </div>
+          <p class="hero-statement" data-k="statement">
+            <span class="eyebrow">Kutunun içinde ne var?</span>
+            <span class="hero-statement-big">Üç sistem. <span class="grad-text">Bir mentör.</span></span>
+            <span class="hero-statement-tags"><span>Thumbnail Studio</span><span>Mentörlük Paneli</span><span>Channel Prompt</span></span>
+          </p>
+        </div>
+        <div class="scroll-hint" data-k="hint" aria-hidden="true"><span>Kaydır</span><i></i></div>
+      </div>
+    </section>
+
+    <!-- ============ 2 · THUMBNAIL STUDIO → DASHBOARD ============ -->
+    <section class="scene scene-products" data-scene="products" style="--len:620vh">
+      <span class="anchor" id="thumbnail" aria-hidden="true"></span>
+      <div class="sticky">
+        <div class="container stage" data-k="stage">
+
+          <!-- A · text -->
+          <div class="panel panel-a" data-k="textA">
+            <div class="panel-head"><span class="eyebrow">01 · Thumbnail Studio</span><span class="badge badge-soon">Yakında</span></div>
+            <h2 class="h2">Kaydırırken durduran <span class="grad-text">kapaklar.</span></h2>
+            <p class="muted panel-p">İzleyici videonu açmadan önce kapağına bakar ve karar bir saniyede verilir. Thumbnail Studio, videonun konusundan yola çıkıp dikkat çeken kapak fikirleri ve tasarımları çıkarmana yardım edecek. Boş tuvale bakıp ilham beklemek yok.</p>
+            <ul class="ticks">
+              <li>Videonun konusuna göre kapak fikirleri</li>
+              <li>Kanalının tarzına uyan tasarımlar</li>
+              <li>Yan yana koyup seçebileceğin seçenekler</li>
+            </ul>
+            <a class="btn btn-ghost" href="https://wa.me/905377935090?text=Merhaba%2C%20Thumbnail%20Studio%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">Açılınca haber ver</a>
+          </div>
+
+          <!-- A · visual -->
+          <div class="vis vis-a" data-k="visA" aria-hidden="true">
+            <div class="studio win" data-k="studio">
+              <div class="win-bar"><i></i><i></i><i></i><span>Thumbnail Studio</span></div>
+              <div class="studio-body">
+                <div class="studio-canvas">
+                  <div class="thumb t-main">
+                    <svg class="t-art" viewBox="0 0 160 90" preserveAspectRatio="xMidYMax slice"><path d="M0 90V62l18-10 14 8 20-22 16 14 22-30 24 26 16-8 30 22v28z" fill="rgba(0,0,0,.55)"/><circle cx="118" cy="22" r="10" fill="rgba(255,220,150,.55)"/></svg>
+                    <b>KAYIP <em>ŞEHİR</em><br/>BULUNDU</b>
+                    <span class="t-dur">18:24</span>
+                  </div>
+                  <span class="studio-cursor"></span>
+                </div>
+                <div class="studio-tools">
+                  <span class="tool on">Fikir</span><span class="tool">Metin</span><span class="tool">Renk</span><span class="tool">Seçenekler</span>
+                </div>
+              </div>
+            </div>
+            <div class="thumb t1" data-thumb>
+              <svg class="t-art" viewBox="0 0 160 90" preserveAspectRatio="xMidYMax slice"><path d="M14 66h120l-10 14H30z" fill="rgba(0,0,0,.6)"/><path d="M40 66V50h70v16M56 50V36h8v14M74 50V32h8v18M92 50V36h8v14" fill="rgba(0,0,0,.6)"/><path d="M0 78c20-4 40 4 60 0s40-4 60 0 30 4 40 0v12H0z" fill="rgba(0,20,40,.7)"/></svg>
+              <b>TİTANİK’İN<br/>SON <em>160</em> DAKİKASI</b><span class="t-dur">21:05</span>
+            </div>
+            <div class="thumb t2" data-thumb>
+              <svg class="t-art" viewBox="0 0 160 90" preserveAspectRatio="xMidYMax slice"><path d="M30 74c20-16 70-18 100 0z" fill="rgba(0,0,0,.55)"/><path d="M84 60c0-14 2-24 6-34M90 26c-8 0-14 4-18 8M90 26c8-2 14 0 18 4M90 26c-2-6-8-8-12-8M90 26c4-6 10-6 14-4" stroke="rgba(0,0,0,.6)" stroke-width="3" fill="none"/><path d="M0 76h160v14H0z" fill="rgba(0,30,50,.6)"/></svg>
+              <b>BU ADAYA<br/>GİRMEK <em>YASAK</em></b><span class="t-dur">14:52</span>
+            </div>
+            <div class="thumb t3" data-thumb>
+              <svg class="t-art" viewBox="0 0 160 90" preserveAspectRatio="xMidYMax slice"><path d="M20 80 62 30l42 50z" fill="rgba(0,0,0,.5)"/><path d="M84 80l34-36 34 36z" fill="rgba(0,0,0,.4)"/><path d="M0 80h160v10H0z" fill="rgba(60,30,0,.5)"/></svg>
+              <b>PİRAMİTLERİN<br/>ALTINDA <em>NE VAR?</em></b><span class="t-dur">26:10</span>
+            </div>
+            <div class="thumb t4" data-thumb>
+              <svg class="t-art" viewBox="0 0 160 90" preserveAspectRatio="xMidYMax slice"><path d="M96 90V44h10v-8h8v8h10v46zM60 90V58h24v32z" fill="rgba(0,0,0,.55)"/><circle cx="40" cy="30" r="12" fill="none" stroke="rgba(255,230,0,.5)" stroke-width="3"/><path d="M40 30l0-10M40 30l9 5M40 30l-9 5" stroke="rgba(255,230,0,.5)" stroke-width="3"/></svg>
+              <b>ÇERNOBİL<br/><em>BUGÜN</em></b><span class="t-dur">17:33</span>
+            </div>
+          </div>
+
+          <!-- B · visual (dashboard assembles here) -->
+          <div class="vis vis-b" data-k="visB" aria-hidden="true">
+            <div class="dash win" data-k="dash">
+              <div class="win-bar" data-piece="0,-0.25,0"><i></i><i></i><i></i><span>dashboard.karakutuyoutube.com</span></div>
+              <div class="dash-body">
+                <aside class="d-side" data-piece="-0.35,0,-4">
+                  <span class="d-logo"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
+                  <span class="d-nav on">Randevu al</span>
+                  <span class="d-nav">Randevularım</span>
+                  <span class="d-nav">Kanallarım</span>
+                  <span class="d-nav">Profil</span>
+                </aside>
+                <div class="d-main">
+                  <div class="d-top" data-piece="0,-0.2,0">
+                    <div><small>Hoş geldin</small><strong>Merhaba, Ece</strong></div>
+                    <span class="d-avatar">E</span>
+                  </div>
+                  <div class="d-grid">
+                    <div class="d-card d-book" data-piece="-0.25,0.3,-6">
+                      <strong>Randevu al</strong>
+                      <div class="d-days"><span>Pzt<b>12</b></span><span>Sal<b>13</b></span><span class="on">Çar<b>14</b></span><span>Per<b>15</b></span><span>Cum<b>16</b></span></div>
+                      <div class="d-slots"><span>10:00</span><span class="off">11:30</span><span class="on">14:00</span><span>15:30</span><span class="off">17:00</span><span>20:00</span></div>
+                      <span class="d-note">Bu hafta 1 randevu hakkın var</span>
+                    </div>
+                    <div class="d-col">
+                      <div class="d-card d-appt" data-piece="0.35,-0.05,5">
+                        <span class="d-badge">Onaylandı</span>
+                        <strong>Çarşamba · 14:00</strong>
+                        <span class="d-meet"><i></i>Google Meet linkin hazır</span>
+                        <span class="d-btn">Görüşmeye katıl</span>
+                      </div>
+                      <div class="d-card d-chan" data-piece="0.3,0.35,4">
+                        <small>Kanalın</small>
+                        <strong>Gizemli Tarih</strong>
+                        <div class="d-tags"><span>Belgesel</span><span>64 video</span><span class="g">Para kazanıyor</span></div>
+                        <span class="d-hard">Zorlandığın konu: <b>Giriş kancası</b></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-toast" data-piece="0,0.2,0"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mentörüne WhatsApp’tan haber verildi</div>
+            </div>
+          </div>
+
+          <!-- B · text -->
+          <div class="panel panel-b" data-k="textB">
+            <div class="panel-head"><span class="eyebrow">02 · Mentörlük Paneli</span><span class="badge badge-live">Yayında</span></div>
+            <h2 class="h2">Mentörlüğün <span class="grad-text">tek ekranda.</span></h2>
+            <p class="muted panel-p">Randevunu al, kanalını tanıt, gerisini panel halletsin. Görüşmen onaylandığında Google Meet linki kendiliğinden oluşur; mentörün de kanalını görüşmeden önce tanımış olur.</p>
+            <ul class="ticks">
+              <li>Mentörün müsait saatlerinden sana uyanı seç</li>
+              <li>Onaylanınca Google Meet linki otomatik gelir</li>
+              <li>Kanalın, rakiplerin ve takıldığın konu tek profilde</li>
+              <li>Tek dokunuşla WhatsApp’tan haber ver</li>
+            </ul>
+            <a class="btn btn-primary" href="https://dashboard.karakutuyoutube.com">Panele git <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3 · CHANNEL PROMPT ============ -->
+    <section class="scene scene-prompt" data-scene="prompt" style="--len:400vh">
+      <span class="anchor" id="prompt" aria-hidden="true"></span>
+      <div class="sticky">
+        <div class="container stage stage-prompt">
+          <div class="panel" data-k="text">
+            <div class="panel-head"><span class="eyebrow">03 · Channel Prompt</span><span class="badge badge-soon">Yakında</span></div>
+            <h2 class="h2">Başarılı bir kanalın <span class="grad-text">formülünü çöz.</span></h2>
+            <p class="muted panel-p">Örnek aldığın kanalın en çok izlenen 5 videosunu ver. Channel Prompt bu videoları inceleyip Claude Projesi’ne yapıştıracağın tek bir prompt hazırlar. Sonrasında Claude o kanalın dilini bilerek her yeni videoyu seninle birlikte çıkarır: fikirden başlığa, senaryodan SEO’ya kadar.</p>
+            <ol class="flow" data-k="flow">
+              <li><b>1</b>Kanal</li>
+              <li><b>2</b>5 video</li>
+              <li><b>3</b>Prompt</li>
+              <li><b>4</b>Claude Projesi</li>
+            </ol>
+            <div class="prompt-foot">
+              <span class="pill-status"><i></i>Veriler cihazından çıkmaz</span>
+              <a class="btn btn-ghost" href="https://wa.me/905377935090?text=Merhaba%2C%20Channel%20Prompt%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">Açılınca haber ver</a>
+            </div>
+          </div>
+
+          <div class="vis vis-prompt" aria-hidden="true">
+            <div class="pmock win" data-k="mock">
+              <div class="win-bar"><i></i><i></i><i></i><span>Channel Prompt</span></div>
+              <div class="pm-body">
+                <div class="pm-chan" data-k="chan">
+                  <span class="pm-av">GT</span>
+                  <div><strong>@gizemlitarih</strong><small>Belgesel · Türkçe · Referans kanal</small></div>
+                  <span class="pm-ok">Eklendi</span>
+                </div>
+                <div class="pm-list" data-k="list">
+                  <div class="pm-row" data-row><i class="c1"></i><span>Titanik’in son 160 dakikası<small>2,4 Mn görüntülenme · transkript</small></span><b></b></div>
+                  <div class="pm-row" data-row><i class="c2"></i><span>Bu adaya girmek yasak<small>1,9 Mn görüntülenme · transkript</small></span><b></b></div>
+                  <div class="pm-row" data-row><i class="c3"></i><span>Piramitlerin altında ne var?<small>1,6 Mn görüntülenme · transkript</small></span><b></b></div>
+                  <div class="pm-row" data-row><i class="c4"></i><span>Çernobil bugün<small>1,2 Mn görüntülenme · transkript</small></span><b></b></div>
+                  <div class="pm-row" data-row><i class="c5"></i><span>Kayıp şehir bulundu<small>980 B görüntülenme · transkript</small></span><b></b></div>
+                  <span class="pm-scan" data-k="scan"></span>
+                </div>
+                <div class="pm-out" data-k="out">
+                  <div class="pm-out-head"><span>Hazır prompt</span><span class="pm-copy" data-k="copy">Kopyalandı</span></div>
+                  <pre data-k="type">Sen @gizemlitarih kanalının içerik stratejistisin.
+
+Önce bu 5 videoyu incele:
+· Başlıklardaki merak boşluğu
+· İlk 30 saniyedeki kanca
+· Anlatım temposu ve bölüm geçişleri
+· Kapaktaki ana vaat
+
+Sonra her yeni videoyu benimle adım adım hazırla: fikir, başlık, senaryo, kapak ve SEO.</pre>
+                </div>
+                <div class="pm-claude" data-k="claude"><span class="pm-spark"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>Claude Projesi’ne eklendi. Artık kanalı tanıyor.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4 · MENTÖRLÜK ============ -->
+    <section class="section" id="mentorluk">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Mentörlük</span>
+          <h2 class="h2">Kanalını büyütürken <span class="grad-text">yalnız değilsin.</span></h2>
+          <p class="lead">Kara Kutu mentörlüğünde kanalını Kürşat’la birebir masaya yatırırsın. Neyin işe yaradığına, neyin yaramadığına birlikte bakar, bir sonraki adımı netleştirirsiniz. Görüşmeler panelden planlanır, Google Meet’te yapılır.</p>
+        </div>
+        <div class="mentor-grid">
+          <article class="m-card glass spot reveal">
+            <span class="m-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c2 .7 3.2 2.4 3.6 5.2"/></svg></span>
+            <h3>Kimler için?</h3>
+            <p>Başta yüzsüz ve belgesel tarzı kanallar olmak üzere, ilk videosunu hazırlayandan para kazanmaya başlamış kanala kadar herkes için.</p>
+          </article>
+          <article class="m-card glass spot reveal">
+            <span class="m-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="m15.5 10.5 6-3.5v10l-6-3.5"/></svg></span>
+            <h3>Birebir görüşmeler</h3>
+            <p>Panelden sana uyan saati seçersin, görüşme onaylanınca Google Meet linkin otomatik gelir. Ekstra uygulama yok, kurulum yok.</p>
+          </article>
+          <article class="m-card glass spot reveal">
+            <span class="m-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 3v3M16 3v3M3 10h18M8 14h2M12 14h2M16 14h0"/></svg></span>
+            <h3>Düzenli ritim</h3>
+            <p>Yeni üyeler ilk 4 görüşmeyi haftada bir yapar, sonra iki haftada bire geçer. Başta sık görüşüp temeli sağlam atarız, sonra kendi yürüyüşüne alan açarız.</p>
+          </article>
+          <article class="m-card glass spot reveal">
+            <span class="m-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H8z"/><path d="M8.5 9h7M8.5 12.5h4.5"/></svg></span>
+            <h3>Kaldığın yerden devam</h3>
+            <p>Kanal bilgilerin, rakip kanalların ve en çok zorlandığın konu panelde durur. Her görüşmeye sıfırdan değil, kaldığın yerden başlarsın.</p>
+          </article>
+        </div>
+        <div class="mentor-cta reveal">
+          <a class="btn btn-wa btn-lg" href="https://wa.me/905377935090?text=Merhaba%2C%20Kara%20Kutu%20YouTube%20Akademisi%20ment%C3%B6rl%C3%BCk%20program%C4%B1%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum."><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>Mentörlük hakkında yaz</a>
+          <a class="btn btn-text btn-lg" href="https://dashboard.karakutuyoutube.com">Zaten öğrenciysen panele gir</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 5 · EKOSİSTEM ============ -->
+    <section class="scene scene-eco" data-scene="eco" style="--len:280vh">
+      <span class="anchor" id="ekosistem" aria-hidden="true"></span>
+      <div class="sticky">
+        <div class="container eco-wrap">
+          <div class="eco-head" data-k="head">
+            <span class="eyebrow">Ekosistem</span>
+            <h2 class="h2">Hepsi <span class="grad-text">aynı kutuda.</span></h2>
+            <p class="muted">Her sistem tek başına da işe yarar, ama asıl fark birlikte kullanınca çıkar. Fikrini Channel Prompt’la bul, kapağını Thumbnail Studio’da hazırla, yol haritanı mentörünle panelde çiz.</p>
+          </div>
+          <div class="eco-stage" data-k="estage">
+            <svg class="eco-lines" data-k="svg" aria-hidden="true"></svg>
+            <div class="eco-core" data-k="core">
+              <span class="eco-cube"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></svg></span>
+              <strong>Kara Kutu</strong>
+            </div>
+            <a class="eco-node n1" data-node href="https://dashboard.karakutuyoutube.com"><span class="en-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 3v3M16 3v3M3 10h18"/></svg></span><span><b>Mentörlük Paneli</b><small class="live">Yayında</small></span></a>
+            <a class="eco-node n2" data-node href="#prompt"><span class="en-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg></span><span><b>Channel Prompt</b><small>Yakında</small></span></a>
+            <a class="eco-node n3" data-node href="#thumbnail"><span class="en-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3 16 5-5 4 4 3-3 6 6"/></svg></span><span><b>Thumbnail Studio</b><small>Yakında</small></span></a>
+            <a class="eco-node n4" data-node href="#mentorluk"><span class="en-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/></svg></span><span><b>Birebir mentörlük</b><small>Kürşat ile</small></span></a>
+            <div class="eco-node n5 you" data-node><span class="en-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="4"/><path d="m10 9.5 4.5 2.5-4.5 2.5z" fill="currentColor"/></svg></span><span><b>Senin kanalın</b><small>Hepsinin merkezinde</small></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6 · SİSTEMLER (quick access) ============ -->
+    <section class="section" id="sistemler">
+      <div class="container">
+        <div class="section-head reveal">
+          <span class="eyebrow">Sistemler</span>
+          <h2 class="h2">Kutunun içindekiler</h2>
+          <p class="muted">Her sistem kendi adresinde çalışır, hepsi aynı tasarım dilini konuşur. Hazır olanı hemen kullan, yakında geleceklerden ilk sen haberdar ol.</p>
+        </div>
+        <div class="grid-3">
+          <a class="product card glass glow spot reveal" href="https://dashboard.karakutuyoutube.com">
+            <div class="product-top">
+              <span class="product-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 3v3M16 3v3M3 10h18"/></svg></span>
+              <span class="badge badge-live">Yayında</span>
+            </div>
+            <h3>Mentörlük Paneli</h3>
+            <p>Randevunu al, Google Meet linkin otomatik gelsin, kanal bilgilerini mentörünle paylaş. Mentörlüğün tamamı burada döner.</p>
+            <span class="btn btn-primary btn-block">Panele git</span>
+          </a>
+          <a class="product card glass spot reveal" href="https://wa.me/905377935090?text=Merhaba%2C%20Channel%20Prompt%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">
+            <div class="product-top">
+              <span class="product-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg></span>
+              <span class="badge badge-soon">Yakında</span>
+            </div>
+            <h3>Channel Prompt</h3>
+            <p>Başarılı bir kanalın en çok izlenen 5 videosunu gir; formülünü çözen, Claude Projesi’ne yapıştırılacak hazır promptu al.</p>
+            <span class="btn btn-ghost btn-block">Açılınca haber ver</span>
+          </a>
+          <a class="product card glass spot reveal" href="https://wa.me/905377935090?text=Merhaba%2C%20Thumbnail%20Studio%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">
+            <div class="product-top">
+              <span class="product-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3 16 5-5 4 4 3-3 6 6"/></svg></span>
+              <span class="badge badge-soon">Yakında</span>
+            </div>
+            <h3>Thumbnail Studio</h3>
+            <p>Videona uygun, tıklanmak için tasarlanmış kapak fikirleri ve tasarımları. Kaydırırken durduran kapaklar için.</p>
+            <span class="btn btn-ghost btn-block">Açılınca haber ver</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 7 · SSS ============ -->
+    <section class="section" id="sss">
+      <div class="container faq-wrap">
+        <div class="section-head reveal">
+          <span class="eyebrow">Sık sorulanlar</span>
+          <h2 class="h2">Aklına takılanlar</h2>
+        </div>
+        <div class="faq">
+          <details class="glass reveal">
+            <summary>Mentörlüğe nasıl başlarım?</summary>
+            <p>WhatsApp’tan yaz, kanalını ve hedeflerini konuşalım. Program sana uyuyorsa panele kaydolur, ilk randevunu kendin seçersin.</p>
+          </details>
+          <details class="glass reveal">
+            <summary>Kanalım yeni, yine de işime yarar mı?</summary>
+            <p>Evet. Mentörlük ilk videosunu hazırlayanlardan para kazanmaya başlamış kanallara kadar her aşamaya göre şekillenir. Yeni kanallarda temeli doğru atmak, sonradan düzeltmekten çok daha kolay.</p>
+          </details>
+          <details class="glass reveal">
+            <summary>Yüzümü göstermeden kanal büyütebilir miyim?</summary>
+            <p>Odak noktamız tam olarak bu. Yüzsüz ve belgesel tarzı kanallar üzerine çalışıyoruz; konu seçimi, anlatım, kapak ve yayın düzeni bu formata göre ele alınır.</p>
+          </details>
+          <details class="glass reveal">
+            <summary>Görüşmeler nerede ve nasıl yapılıyor?</summary>
+            <p>Birebir, Google Meet üzerinden. Panelden saat seçersin, görüşme onaylandığında Meet linki otomatik oluşur ve takvim davetin gelir.</p>
+          </details>
+          <details class="glass reveal">
+            <summary>Thumbnail Studio ve Channel Prompt ne zaman açılıyor?</summary>
+            <p>İkisi de üzerinde çalıştığımız sistemler. Hazır olduklarında ilk haber almak istersen WhatsApp’tan “haber ver” demen yeterli.</p>
+          </details>
+          <details class="glass reveal">
+            <summary>Verilerim güvende mi?</summary>
+            <p>Sadece işe yarayan bilgiyi isteriz. Channel Prompt’ta girdiğin veriler cihazından çıkmaz; panelde paylaştığın kanal bilgilerini yalnızca mentörlük için kullanırız. Ayrıntılar <a class="link" href="https://dashboard.karakutuyoutube.com/gizlilik">gizlilik politikasında</a>.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 8 · FINAL CTA ============ -->
+    <section class="section final">
+      <div class="container">
+        <div class="cta card glass glow reveal">
+          <span class="cta-ring" aria-hidden="true"></span>
+          <span class="eyebrow">Kara kutuyu aç</span>
+          <h2 class="h2">Kanalını birlikte <span class="grad-text">büyütelim.</span></h2>
+          <p class="lead">Mentörlük programı hakkında merak ettiklerini WhatsApp’tan sor. Kanalını ve hedeflerini konuşalım, sonrasına birlikte karar verelim.</p>
+          <div class="cta-actions">
+            <a class="btn btn-wa btn-lg" href="https://wa.me/905377935090?text=Merhaba%2C%20Kara%20Kutu%20YouTube%20Akademisi%20ment%C3%B6rl%C3%BCk%20program%C4%B1%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum."><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp’tan yaz</a>
+          </div>
+          <p class="fine">+90 537 793 50 90</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <div class="container">
+      <span>© <span data-year>2026</span> Kara Kutu YouTube Akademisi</span>
+      <span class="foot-links"><a href="https://dashboard.karakutuyoutube.com/gizlilik">Gizlilik</a><a href="https://dashboard.karakutuyoutube.com/kosullar">Kullanım koşulları</a><a href="https://wa.me/905377935090">WhatsApp</a></span>
+    </div>
+  </footer>
+
+  <script src="/assets/site.js" defer></script>
+</body>
+</html>
