@@ -163,8 +163,9 @@
       if (n !== this.shown) {
         this.shown = n
         this.type.textContent = this.full.slice(0, n)
-        this.type.classList.toggle('typing', ty > 0 && ty < 1)
       }
+      var typing = ty > 0 && n < this.full.length
+      if (typing !== this.typing) { this.typing = typing; this.type.classList.toggle('typing', typing) }
       show(this.copy, seg(p, 0.82, 0.86))
       var cl = eo(seg(p, 0.84, 0.92))
       show(this.claude, cl, 'translate3d(0,' + r3((1 - cl) * 24) + 'px,0) scale(' + r3(lerp(0.94, 1, cl)) + ')')
@@ -268,8 +269,9 @@
       if (n !== this.shown) {
         this.shown = n
         this.url.textContent = this.fullUrl.slice(0, n)
-        this.urlWrap.classList.toggle('typing', ty < 1)
       }
+      var typing = ty > 0 && n < this.fullUrl.length
+      if (typing !== this.typing) { this.typing = typing; this.urlWrap.classList.toggle('typing', typing) }
       var ok = eo(seg(p, 0.26, 0.3))
       show(this.ok, ok, 'scale(' + r3(lerp(0.7, 1, ok)) + ')')
       this.tiles.forEach(function (el, i) {
@@ -374,9 +376,22 @@
   if (!MOTION) $$('.flow li').forEach(function (li) { li.classList.add('on') })
   scenes.forEach(function (s) { s.init() })
 
+  // ---------- size units (instead of container query units: older phone browsers lack cqw/cqh) ----------
+  // --vw/--vh = 1% of a visual cell, --cu = 1% of a mock-up card; the CSS sizes everything with them.
+  var visCells = $$('.vis'), cards = $$('.studio, .dash, .pmock, .prof, .thumb'), dashEl = $('.dash')
+  function units() {
+    visCells.forEach(function (v) {
+      v.style.setProperty('--vw', (v.clientWidth / 100) + 'px')
+      v.style.setProperty('--vh', (v.clientHeight / 100) + 'px')
+    })
+    cards.forEach(function (c) { c.style.setProperty('--cu', (c.offsetWidth / 100) + 'px') })
+    if (dashEl) dashEl.classList.toggle('compact', dashEl.offsetWidth <= 440)
+  }
+
   // ---------- engine ----------
   var gridEl = $('.bg-grid')  // animated by CSS only (compositor), never by scroll
   function measureAll() {
+    units()
     scenes.forEach(function (s) {
       if (s.measure) s.measure()
       s.H = s.sticky.offsetHeight || window.innerHeight
@@ -390,6 +405,7 @@
         if (a) a.style.top = Math.max(0, s.anchors[id] * s.total - s.enter * s.H) + 'px'
       })
     })
+    units() // thumbnails got their pixel widths in measure()
   }
 
   var running = false, lastTs = 0, scrollY = window.scrollY, adv = null
@@ -418,9 +434,9 @@
     })
     if (adv) {
       var t = clamp((ts - adv.start) / adv.dur)
-      window.scrollTo({ top: Math.round(lerp(adv.from, adv.to, eio(t))), behavior: 'instant' })
+      window.scrollTo(0, Math.round(lerp(adv.from, adv.to, eio(t))))
       targets()
-      if (t >= 1) adv = null
+      if (t >= 1) { adv = null; root.style.scrollBehavior = '' }
       busy = true
     }
     if (busy) requestAnimationFrame(tick)
@@ -448,6 +464,7 @@
       if (adv || !promptScene) return
       // land where the channel and the first videos are already on screen
       var to = Math.round(promptScene.top - promptScene.enter * promptScene.H + 0.27 * promptScene.total)
+      root.style.scrollBehavior = 'auto'   // CSS smooth scrolling would fight the glide
       adv = { from: window.scrollY, to: to, start: performance.now(), dur: COARSE ? 1250 : 1450 }
       kick()
     }
@@ -484,8 +501,11 @@
     }
     kick()
   } else {
+    units()
+    window.addEventListener('load', units)
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(units)
     window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', function () { scenes.forEach(function (s) { if (s.lens !== undefined) s.measure() }) })
+    window.addEventListener('resize', function () { units(); scenes.forEach(function (s) { if (s.lens !== undefined) s.measure() }) })
     onScroll()
   }
 
