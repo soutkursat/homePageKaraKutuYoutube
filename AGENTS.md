@@ -45,6 +45,13 @@
   `calc(N * var(--cu))`. The narrow dashboard layout is the `.dash.compact` class.
 - Channel Prompt rows light up one by one with a glow layer inside each row (`.pm-glow`), so the
   highlight always sits exactly on its row.
+- Inside scenes, sub-animations are **timed**: scroll only starts them (`tw(scene, key, on, ms)`),
+  then they play by themselves in a chain (typing, rows, tiles, pieces, eco lines) and rewind when the
+  visitor scrolls back. Card entrances and the Thumbnail → Dashboard morph stay scroll-driven.
+  Timed scene lengths come from `data-len-timed`.
+- **Fallback ("arka kapı")**: `TIMED_ANIMATIONS = false` at the top of `site.js`, or `?klasik` in the
+  URL, restores the previous fully scroll-scrubbed version (each scene keeps it as `classic`) with
+  the original `--len` values. The last commit before timed animations is `7b97b60`.
 - `<html class="motion">` is added in `<head>` unless the visitor prefers reduced motion. Without it
   scenes are not pinned and the markup's natural, fully assembled layout shows. Keep that fallback
   working: every animated element must look right with no inline styles.

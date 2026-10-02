@@ -14,6 +14,10 @@
   'use strict'
   var root = document.documentElement
   var MOTION = root.classList.contains('motion')
+  // ARKA KAPI / FALLBACK: false yaparsan (ya da adrese ?klasik eklersen) sahnelerin içindeki bütün
+  // animasyonlar eskisi gibi tamamen kaydırmaya bağlı çalışır ve sahneler eski uzunluklarına döner.
+  var TIMED_ANIMATIONS = true
+  var TIMED = TIMED_ANIMATIONS && !/[?&]klasik\b/.test(location.search)
   var COARSE = window.matchMedia('(pointer: coarse)').matches
 
   // ---------- helpers ----------
@@ -92,7 +96,32 @@
     def.sticky = $('.sticky', el)
     def.enter = def.enter || 0
     def.cur = -1; def.target = 0
+    if (!TIMED && def.classic) def.update = def.classic
+    if (TIMED && el.getAttribute('data-len-timed')) el.style.setProperty('--len', el.getAttribute('data-len-timed'))
+    def.tw = {}
     scenes.push(def)
+  }
+  // Timed sub-animation: once "on" it plays by itself (0 → 1 in dur ms) and rewinds when "on" turns
+  // false. The scroll only decides WHEN it starts, so text types and pieces assemble without scrubbing.
+  function tw(s, key, on, dur) {
+    var t = s.tw[key] || (s.tw[key] = { v: 0, to: 0, dur: dur })
+    t.to = on ? 1 : 0; t.dur = dur
+    return t.v
+  }
+  function stepTweens(s, dt) {
+    var moved = false
+    for (var key in s.tw) {
+      var t = s.tw[key]
+      if (t.v === t.to) continue
+      var d = dt / t.dur
+      t.v = t.to > t.v ? Math.min(t.to, t.v + d) : Math.max(t.to, t.v - d)
+      moved = true
+    }
+    return moved
+  }
+  function tweensPending(s) {
+    for (var key in s.tw) if (s.tw[key].v !== s.tw[key].to) return true
+    return false
   }
   function fitInto(card) {
     var cell = card.parentNode
@@ -136,7 +165,7 @@
       this.steps = $$('li', k(s, 'flow'))
     },
     measure: function () { this.fit = fitInto(this.mock) },
-    update: function (p) {
+    classic: function (p) {
       var t0 = eo(seg(p, 0, 0.12))
       show(this.text, t0, 'translate3d(0,' + r3((1 - t0) * 36) + 'px,0)')
       show(this.mock, t0, 'perspective(1400px) translate3d(0,' + r3((1 - t0) * 80) + 'px,0) rotateX(' + r3((1 - t0) * 22) + 'deg) scale(' + r3(lerp(0.9, 1, t0) * this.fit) + ')')
@@ -168,6 +197,42 @@
       if (typing !== this.typing) { this.typing = typing; this.type.classList.toggle('typing', typing) }
       show(this.copy, seg(p, 0.82, 0.86))
       var cl = eo(seg(p, 0.84, 0.92))
+      show(this.claude, cl, 'translate3d(0,' + r3((1 - cl) * 24) + 'px,0) scale(' + r3(lerp(0.94, 1, cl)) + ')')
+    },
+    update: function (p) {
+      var t0 = eo(seg(p, 0, 0.12))
+      show(this.text, t0, 'translate3d(0,' + r3((1 - t0) * 36) + 'px,0)')
+      show(this.mock, t0, 'perspective(1400px) translate3d(0,' + r3((1 - t0) * 80) + 'px,0) rotateX(' + r3((1 - t0) * 22) + 'deg) scale(' + r3(lerp(0.9, 1, t0) * this.fit) + ')')
+
+      var chanT = tw(this, 'chan', p >= 0.06, 450)
+      var rowsT = tw(this, 'rows', p >= 0.06 && chanT > 0.6, 900)
+      var scanT = tw(this, 'scan', p >= 0.06 && rowsT >= 1, 1100)
+      var outT = tw(this, 'out', p >= 0.06 && scanT >= 1, 400)
+      var ty = tw(this, 'type', outT >= 1, 1900)
+      var clT = tw(this, 'claude', ty >= 1, 500)
+
+      var step = clT > 0 ? 3 : outT > 0 ? 2 : rowsT > 0 ? 1 : 0
+      if (step !== this.step) { this.step = step; this.steps.forEach(function (li, i) { li.classList.toggle('on', i <= step) }) }
+
+      var c = eo(chanT)
+      show(this.chan, c, 'translate3d(' + r3((1 - c) * -30) + 'px,0,0)')
+      var o = eo(outT)
+      var self = this
+      this.rows.forEach(function (row, i) {
+        var t = eo(seg(rowsT, i * 0.14, i * 0.14 + 0.44))
+        show(row, t * (1 - 0.75 * o), 'translate3d(' + r3((1 - t) * 40) + 'px,0,0)')
+        var gl = eo(seg(scanT, i / 5, (i + 1) / 5))
+        show(self.glows[i], gl)
+        show(self.checks[i], gl, 'scale(' + r3(lerp(0.4, 1, gl)) + ')')
+      })
+
+      show(this.out, o, 'translate3d(0,' + r3((1 - o) * 40) + 'px,0) scale(' + r3(lerp(0.96, 1, o)) + ')')
+      var n = Math.round(this.full.length * ty)
+      if (n !== this.shown) { this.shown = n; this.type.textContent = this.full.slice(0, n) }
+      var typing = ty > 0 && n < this.full.length
+      if (typing !== this.typing) { this.typing = typing; this.type.classList.toggle('typing', typing) }
+      show(this.copy, seg(clT, 0, 0.5))
+      var cl = eo(clT)
       show(this.claude, cl, 'translate3d(0,' + r3((1 - cl) * 24) + 'px,0) scale(' + r3(lerp(0.94, 1, cl)) + ')')
     }
   })
@@ -206,7 +271,7 @@
       this.sB = this.dash.offsetWidth / W
       this.DW = this.dash.offsetWidth
     },
-    update: function (p) {
+    classic: function (p) {
       var self = this, W = this.W, H = this.H
       // A · studio card flies towards the viewer
       var inA = eo(seg(p, 0, 0.14))
@@ -243,6 +308,44 @@
       })
       var bIn = eo(seg(p, 0.7, 0.8))
       show(this.textB, bIn, 'translate3d(0,' + r3((1 - bIn) * 36) + 'px,0)')
+    },
+    update: function (p) {
+      var self = this, W = this.W, H = this.H
+      // A · studio card flies towards the viewer (scroll)
+      var inA = eo(seg(p, 0, 0.14))
+      var m = eio(seg(p, 0.56, 0.7))
+      var tx = 0, ty = (1 - inA) * H * 0.45, sc = lerp(0.6, 1, inA), rx = (1 - inA) * 34, ry = 0
+      if (!this.stack) { tx += this.dx * m; ty += this.dy * m; sc *= lerp(1, this.sB, m); ry = -m * 12 }
+      else { tx -= m * W * 0.7; ry = m * 32; sc *= lerp(1, 0.86, m) }
+      show(this.studio, inA * (1 - seg(p, 0.62, 0.7)),
+        'perspective(1400px) translate3d(' + r3(tx) + 'px,' + r3(ty) + 'px,0) rotateX(' + r3(rx) + 'deg) rotateY(' + r3(ry) + 'deg) scale(' + r3(sc) + ')')
+
+      // thumbnails pop out by themselves, and dive back in before the card turns into the dashboard
+      var th = tw(this, 'thumbs', p >= 0.13 && p < 0.47 && inA > 0.9, 1000)
+      this.thumbs.forEach(function (el, i) {
+        var o = eo(seg(th, i * 0.15, i * 0.15 + 0.55))
+        var tg = self.targets[i]
+        show(el, clamp(o * 1.6),
+          'translate(-50%,-50%) translate3d(' + r3(tg[0] * o) + 'px,' + r3(tg[1] * o) + 'px,0) rotate(' + r3(tg[2] * o) + 'deg) scale(' + r3(lerp(0.3, 1, o)) + ')')
+      })
+
+      var aIn = eo(seg(p, 0.04, 0.14)), aOut = seg(p, 0.46, 0.55)
+      show(this.textA, aIn * (1 - aOut), 'translate3d(0,' + r3((1 - aIn) * 36 - aOut * 36) + 'px,0)')
+
+      // B · dashboard shell appears where the card landed (scroll), pieces assemble by themselves
+      var sh = eo(seg(p, 0.6, 0.7))
+      show(this.dash, sh, this.stack
+        ? 'perspective(1400px) translate3d(' + r3((1 - sh) * W * 0.7) + 'px,0,0) rotateY(' + r3(-(1 - sh) * 32) + 'deg)'
+        : 'none')
+      var pc = tw(this, 'pieces', p >= 0.64 && sh > 0.6, 1500)
+      var last = this.pieces.length - 1
+      this.pieces.forEach(function (piece, i) {
+        var t = i === last ? eo(seg(pc, 0.82, 1)) : eo(seg(pc, i * 0.1, i * 0.1 + 0.45))
+        var u = 1 - t
+        show(piece.el, t, 'translate3d(' + r3(piece.fx * self.DW * u) + 'px,' + r3(piece.fy * self.DW * u) + 'px,0) rotate(' + r3(piece.r * u) + 'deg) scale(' + r3(lerp(0.9, 1, t)) + ')')
+      })
+      var bIn = eo(seg(p, 0.66, 0.76))
+      show(this.textB, bIn, 'translate3d(0,' + r3((1 - bIn) * 36) + 'px,0)')
     }
   })
 
@@ -255,11 +358,11 @@
       this.text = k(s, 'text'); this.card = k(s, 'card')
       this.url = k(s, 'url'); this.urlWrap = this.url.parentNode; this.fullUrl = this.url.textContent; this.shown = -1
       this.ok = k(s, 'ok'); this.tiles = $$('[data-tile]', s); this.count = k(s, 'count'); this.countN = -1
-      this.rivals = $$('[data-rival]', s); this.challenge = k(s, 'challenge'); this.track = k(s, 'track')
+      this.rivals = $$('[data-rival]', s); this.sub = $('.pf-sub', s); this.challenge = k(s, 'challenge'); this.track = k(s, 'track')
       this.fill = k(s, 'fill'); this.dots = $$('[data-dot]', s)
     },
     measure: function () { this.fit = fitInto(this.card) },
-    update: function (p) {
+    classic: function (p) {
       var t0 = eo(seg(p, 0, 0.12))
       show(this.text, t0, 'translate3d(0,' + r3((1 - t0) * 36) + 'px,0)')
       show(this.card, t0, 'perspective(1400px) translate3d(0,' + r3((1 - t0) * 80) + 'px,0) rotateX(' + r3((1 - t0) * 22) + 'deg) scale(' + r3(lerp(0.9, 1, t0) * this.fit) + ')')
@@ -292,6 +395,47 @@
       show(this.fill, 1, 'scaleX(' + r3(f * 0.6667) + ')')
       this.dots.forEach(function (el, i) {
         var t = i < 3 ? eo(seg(f, i / 3 - 0.02, i / 3 + 0.08)) : eo(seg(p, 0.9, 0.96))
+        show(el, lerp(0.25, 1, t), 'scale(' + r3(lerp(0.7, 1, t)) + ')')
+      })
+    },
+    update: function (p) {
+      var t0 = eo(seg(p, 0, 0.12))
+      show(this.text, t0, 'translate3d(0,' + r3((1 - t0) * 36) + 'px,0)')
+      show(this.card, t0, 'perspective(1400px) translate3d(0,' + r3((1 - t0) * 80) + 'px,0) rotateX(' + r3((1 - t0) * 22) + 'deg) scale(' + r3(lerp(0.9, 1, t0) * this.fit) + ')')
+
+      var urlT = tw(this, 'url', p >= 0.06 && t0 > 0.5, 1000)
+      var okT = tw(this, 'ok', urlT >= 1, 300)
+      var tilesT = tw(this, 'tiles', urlT >= 1, 900)
+      var rivT = tw(this, 'rivals', tilesT >= 1, 650)
+      var chT = tw(this, 'challenge', rivT >= 1, 400)
+      var trT = tw(this, 'track', chT >= 1, 400)
+      var fT = tw(this, 'fill', trT >= 1, 1200)
+
+      var n = Math.round(this.fullUrl.length * urlT)
+      if (n !== this.shown) { this.shown = n; this.url.textContent = this.fullUrl.slice(0, n) }
+      var typing = urlT > 0 && n < this.fullUrl.length
+      if (typing !== this.typing) { this.typing = typing; this.urlWrap.classList.toggle('typing', typing) }
+      var ok = eo(okT)
+      show(this.ok, ok, 'scale(' + r3(lerp(0.7, 1, ok)) + ')')
+      this.tiles.forEach(function (el, i) {
+        var t = eo(seg(tilesT, i * 0.1, i * 0.1 + 0.5))
+        show(el, t, 'translate3d(0,' + r3((1 - t) * 18) + 'px,0) scale(' + r3(lerp(0.9, 1, t)) + ')')
+      })
+      var cnt = Math.round(64 * eo(seg(tilesT, 0.3, 1)))
+      if (cnt !== this.countN) { this.countN = cnt; this.count.textContent = cnt }
+      show(this.sub, eo(seg(rivT, 0, 0.4)))
+      this.rivals.forEach(function (el, i) {
+        var t = eo(seg(rivT, i * 0.2, i * 0.2 + 0.6))
+        show(el, t, 'translate3d(' + r3(-(1 - t) * 24) + 'px,0,0)')
+      })
+      var ch = eo(chT)
+      show(this.challenge, ch, 'translate3d(0,' + r3((1 - ch) * 16) + 'px,0)')
+      var tr = eo(trT)
+      show(this.track, tr, 'translate3d(0,' + r3((1 - tr) * 16) + 'px,0)')
+      var f = eio(seg(fT, 0, 0.85))
+      show(this.fill, 1, 'scaleX(' + r3(f * 0.6667) + ')')
+      this.dots.forEach(function (el, i) {
+        var t = i < 3 ? eo(seg(f, i / 3 - 0.02, i / 3 + 0.08)) : eo(seg(fT, 0.85, 1))
         show(el, lerp(0.25, 1, t), 'scale(' + r3(lerp(0.7, 1, t)) + ')')
       })
     }
@@ -352,7 +496,7 @@
         return self.lines[i].getTotalLength()
       })
     },
-    update: function (p) {
+    classic: function (p) {
       var h = eo(seg(p, 0, 0.14))
       show(this.head, h, 'translate3d(0,' + r3((1 - h) * 36) + 'px,0)')
       var c = eo(seg(p, 0.08, 0.22))
@@ -366,6 +510,27 @@
         show(n, t, 'translate(-50%,-50%) scale(' + r3(lerp(0.6, 1, t)) + ')')
       })
       var live = p > 0.66 && p < 1
+      if (live !== this.live) {
+        this.live = live
+        if (!live) this.dots.forEach(function (d) { d.style.opacity = '0' })
+      }
+    },
+    update: function (p) {
+      var h = eo(seg(p, 0, 0.14))
+      show(this.head, h, 'translate3d(0,' + r3((1 - h) * 36) + 'px,0)')
+      var coreT = tw(this, 'core', p >= 0.06, 600)
+      var linesT = tw(this, 'lines', p >= 0.12 && coreT >= 1, 1900)
+      var c = eo(coreT)
+      show(this.core, c, 'translate(-50%,-50%) scale(' + r3(lerp(0.4, 1, c)) + ')')
+      var self = this
+      this.nodes.forEach(function (n, i) {
+        var l = eio(seg(linesT, i * 0.11, i * 0.11 + 0.5))
+        self.lines[i].style.strokeDashoffset = String(r3(1 - l))
+        self.ghosts[i].style.opacity = String(r3(c))
+        var t = eo(seg(linesT, i * 0.11 + 0.3, i * 0.11 + 0.56))
+        show(n, t, 'translate(-50%,-50%) scale(' + r3(lerp(0.6, 1, t)) + ')')
+      })
+      var live = linesT >= 1 && p < 1
       if (live !== this.live) {
         this.live = live
         if (!live) this.dots.forEach(function (d) { d.style.opacity = '0' })
@@ -429,7 +594,9 @@
         if (Math.abs(s.target - next) < 0.0004) next = s.target
         else busy = true
       }
-      if (next !== s.cur) { s.cur = next; s.update(next) }
+      var moved = stepTweens(s, near ? dt : 1e9)
+      if (next !== s.cur || moved) { s.cur = next; s.update(next) }
+      if (tweensPending(s)) busy = true
       if (s.live && near) { s.animate(ts); busy = true }
     })
     if (adv) {
