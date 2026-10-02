@@ -82,48 +82,6 @@
   }
 
   // =====================================================================
-  // HERO (timed: one scroll plays the whole zoom)
-  // =====================================================================
-  var hero = (function () {
-    var s = $('[data-scene="hero"]')
-    if (!s) return null
-    var h = {
-      giant: k(s, 'giant'), box: k(s, 'box'), statement: k(s, 'statement'), hint: k(s, 'hint'),
-      rest: $$('.chip-outline, .hero-title, .hero-lead, .hero-cta', k(s, 'content')),
-      p: 0, from: 0, to: 0, start: 0, dur: 1, running: false
-    }
-    h.update = function (p) {
-      var g = eio(seg(p, 0.04, 0.78))
-      show(h.giant, 1 - seg(p, 0.42, 0.74), 'translate3d(0,0,0) scale(' + r3(1 + g * 8) + ')')
-      var c = eo(seg(p, 0, 0.3))
-      h.rest.forEach(function (el, i) {
-        var dir = i === 0 ? -1 : 1
-        show(el, 1 - c, 'translate3d(0,' + r3(dir * c * (50 + i * 18)) + 'px,0)')
-      })
-      var b = eio(seg(p, 0.06, 0.82))
-      show(h.box, seg(p, 0.02, 0.16) * (1 - seg(p, 0.58, 0.84)), 'translate(-50%,-50%) scale(' + r3(0.6 + b * 9) + ') rotate(' + r3(b * 45) + 'deg)')
-      var st = eo(seg(p, 0.58, 1))
-      show(h.statement, st, 'translateY(-50%) translateY(' + r3((1 - st) * 40) + 'px) scale(' + r3(lerp(0.9, 1, st)) + ')')
-      show(h.hint, 1 - seg(p, 0, 0.08))
-    }
-    h.play = function (to, now) {
-      if (to === h.to) return
-      h.from = h.p; h.to = to; h.start = now
-      h.dur = (to ? 1500 : 900) * Math.abs(to - h.p) + 1
-      h.running = true
-    }
-    h.tick = function (now) {
-      if (!h.running) return false
-      var t = clamp((now - h.start) / h.dur)
-      h.p = lerp(h.from, h.to, h.to ? eio(t) : eo(t))
-      h.update(h.p)
-      if (t >= 1) h.running = false
-      return h.running
-    }
-    return h
-  })()
-
-  // =====================================================================
   // SCROLL SCENES
   // =====================================================================
   var scenes = []
@@ -141,6 +99,29 @@
     return Math.min(1, (cell.clientHeight - 8) / card.offsetHeight, cell.clientWidth / card.offsetWidth)
   }
 
+  // ---------- 0 · HERO (scrubbed; the first scroll auto-advances to Channel Prompt) ----------
+  addScene('hero', {
+    span: 0.75,
+    init: function () {
+      var s = this.el
+      this.giant = k(s, 'giant'); this.box = k(s, 'box'); this.hint = k(s, 'hint')
+      this.rest = $$('.chip-outline, .hero-title, .hero-lead, .hero-cta', k(s, 'content'))
+      this.zoom = COARSE ? 5 : 8
+    },
+    update: function (p) {
+      var g = eio(seg(p, 0, 0.9))
+      show(this.giant, 1 - seg(p, 0.35, 0.85), 'translate3d(0,0,0) scale(' + r3(1 + g * this.zoom) + ')')
+      var c = eo(seg(p, 0, 0.35))
+      this.rest.forEach(function (el, i) {
+        var dir = i === 0 ? -1 : 1
+        show(el, 1 - c, 'translate3d(0,' + r3(dir * c * (50 + i * 18)) + 'px,0)')
+      })
+      var b = eio(seg(p, 0.04, 0.9))
+      show(this.box, seg(p, 0.02, 0.15) * (1 - seg(p, 0.55, 0.85)), 'translate(-50%,-50%) scale(' + r3(0.6 + b * 9) + ') rotate(' + r3(b * 45) + 'deg)')
+      show(this.hint, 1 - seg(p, 0, 0.1))
+    }
+  })
+
   // ---------- 1 · CHANNEL PROMPT ----------
   addScene('prompt', {
     enter: 0.55,
@@ -149,7 +130,8 @@
       var s = this.el
       this.text = k(s, 'text'); this.mock = k(s, 'mock'); this.chan = k(s, 'chan')
       this.rows = $$('[data-row]', s); this.checks = this.rows.map(function (r) { return $('b', r) })
-      this.scan = k(s, 'scan'); this.out = k(s, 'out'); this.copy = k(s, 'copy'); this.claude = k(s, 'claude')
+      this.glows = this.rows.map(function (r) { return $('.pm-glow', r) })
+      this.out = k(s, 'out'); this.copy = k(s, 'copy'); this.claude = k(s, 'claude')
       this.type = k(s, 'type'); this.full = this.type.textContent; this.shown = -1
       this.steps = $$('li', k(s, 'flow'))
     },
@@ -165,15 +147,15 @@
       var c = eo(seg(p, 0.08, 0.16))
       show(this.chan, c, 'translate3d(' + r3((1 - c) * -30) + 'px,0,0)')
       var o = eo(seg(p, 0.5, 0.58))
-      var scanT = seg(p, 0.38, 0.5)
+      var scanT = seg(p, 0.33, 0.5)
       var self = this
       this.rows.forEach(function (row, i) {
         var t = eo(seg(p, 0.17 + i * 0.035, 0.25 + i * 0.035))
         show(row, t * (1 - 0.75 * o), 'translate3d(' + r3((1 - t) * 40) + 'px,0,0)')
-        var ck = seg(scanT, (i + 0.3) / 5, (i + 0.9) / 5)
-        show(self.checks[i], ck, 'scale(' + r3(lerp(0.4, 1, eo(ck))) + ')')
+        var gl = eo(seg(scanT, i / 5, (i + 1) / 5))
+        show(self.glows[i], gl)
+        show(self.checks[i], gl, 'scale(' + r3(lerp(0.4, 1, gl)) + ')')
       })
-      show(this.scan, scanT > 0 && scanT < 1 ? 1 : 0, 'translate3d(0,' + r3(scanT * 470 - 20) + '%,0)')
 
       show(this.out, o, 'translate3d(0,' + r3((1 - o) * 40) + 'px,0) scale(' + r3(lerp(0.96, 1, o)) + ')')
       var ty = seg(p, 0.56, 0.82)
@@ -394,14 +376,13 @@
 
   // ---------- engine ----------
   var gridEl = $('.bg-grid')  // animated by CSS only (compositor), never by scroll
-  var heroEnd = 0
   function measureAll() {
     scenes.forEach(function (s) {
       if (s.measure) s.measure()
       s.H = s.sticky.offsetHeight || window.innerHeight
       s.top = absTop(s.el)
       s.height = s.el.offsetHeight
-      s.total = Math.max(1, s.height - s.H + s.enter * s.H)
+      s.total = s.span ? s.span * s.H : Math.max(1, s.height - s.H + s.enter * s.H)
       s.cur = -1
       // anchors land on a moment where the scene is already readable
       if (s.anchors) Object.keys(s.anchors).forEach(function (id) {
@@ -409,10 +390,9 @@
         if (a) a.style.top = Math.max(0, s.anchors[id] * s.total - s.enter * s.H) + 'px'
       })
     })
-    if (hero) { var hs = $('[data-scene="hero"]'); heroEnd = absTop(hs) + hs.offsetHeight }
   }
 
-  var running = false, lastTs = 0, scrollY = window.scrollY
+  var running = false, lastTs = 0, scrollY = window.scrollY, adv = null
   var TAU = COARSE ? 95 : 80   // ms; smoothing time constant
   function targets() {
     scrollY = window.scrollY
@@ -436,7 +416,13 @@
       if (next !== s.cur) { s.cur = next; s.update(next) }
       if (s.live && near) { s.animate(ts); busy = true }
     })
-    if (hero && hero.tick(ts)) busy = true
+    if (adv) {
+      var t = clamp((ts - adv.start) / adv.dur)
+      window.scrollTo({ top: Math.round(lerp(adv.from, adv.to, eio(t))), behavior: 'instant' })
+      targets()
+      if (t >= 1) adv = null
+      busy = true
+    }
     if (busy) requestAnimationFrame(tick)
     else { running = false; lastTs = 0 }
   }
@@ -448,7 +434,6 @@
       var docH = root.scrollHeight - window.innerHeight
       navBar.style.setProperty('--page-p', docH > 0 ? (scrollY / docH).toFixed(4) : 0)
     }
-    if (hero && MOTION) hero.play(scrollY > 6 ? 1 : 0, performance.now())
     if (MOTION) kick()
   }
 
@@ -456,19 +441,33 @@
   function remeasure() { measureAll(); targets(); kick() }
   if (MOTION) {
     measureAll(); targets()
-    if (hero) {
-      // landing in the middle of the page (reload, anchor): no intro replay
-      if (scrollY > 6) { hero.p = 1; hero.to = 1; hero.update(1) } else hero.update(0)
-      // the very first wheel/touch at the top starts the zoom immediately
-      var intro = function (e) {
-        if (window.scrollY > 6) return
-        if (e.type === 'wheel' && e.deltaY <= 0) return
-        hero.play(1, performance.now()); kick()
-      }
-      window.addEventListener('wheel', intro, { passive: true })
-      window.addEventListener('touchmove', intro, { passive: true })
-      window.addEventListener('keydown', function (e) { if (/^(ArrowDown|PageDown|Space| )$/.test(e.key || e.code)) intro(e) })
+    // ---- intro: at the very top, one short scroll/swipe/key glides to Channel Prompt ----
+    var promptScene = scenes.filter(function (s) { return s.el.getAttribute('data-scene') === 'prompt' })[0]
+    var atTop = function () { return window.scrollY <= 10 && !$('dialog[open]') && !(menu && !menu.hidden) }
+    var startAdvance = function () {
+      if (adv || !promptScene) return
+      // land where the channel and the first videos are already on screen
+      var to = Math.round(promptScene.top - promptScene.enter * promptScene.H + 0.27 * promptScene.total)
+      adv = { from: window.scrollY, to: to, start: performance.now(), dur: COARSE ? 1250 : 1450 }
+      kick()
     }
+    window.addEventListener('wheel', function (e) {
+      if (adv) { e.preventDefault(); return }
+      if (e.deltaY > 0 && atTop()) { e.preventDefault(); startAdvance() }
+    }, { passive: false })
+    var touchY = null
+    window.addEventListener('touchstart', function (e) { touchY = e.touches[0].clientY }, { passive: true })
+    window.addEventListener('touchmove', function (e) {
+      if (adv) { if (e.cancelable) e.preventDefault(); return }
+      if (touchY == null || !atTop()) return
+      if (touchY - e.touches[0].clientY > 6) { if (e.cancelable) e.preventDefault(); startAdvance() }
+    }, { passive: false })
+    window.addEventListener('keydown', function (e) {
+      var down = /^(ArrowDown|PageDown| |Spacebar)$/.test(e.key)
+      if (!down || /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test((e.target.tagName || ''))) return
+      if (adv) { e.preventDefault(); return }
+      if (atTop()) { e.preventDefault(); startAdvance() }
+    })
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener('resize', function () {
       // the mobile URL bar only changes the height: layout is in svh/vh, nothing to re-measure

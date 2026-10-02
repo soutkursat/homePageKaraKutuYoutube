@@ -36,7 +36,11 @@
   towards the scroll target, and uses the sticky height (100svh) instead of innerHeight so the URL
   bar never causes jumps. Never link anything to scroll with sin/wobble; never animate
   `backdrop-filter`/`filter` inside scenes; the background grid moves with a CSS animation only.
-- The hero is timed, not scrubbed: the first scroll/wheel/touch plays the zoom (`hero.play`).
+- The hero zoom is scrubbed by scroll (`span`), and at the very top one short wheel/swipe/key
+  glides the page (eased `window.scrollTo`) into Channel Prompt (`startAdvance`); input is blocked
+  only during that ~1.3 s glide.
+- Channel Prompt rows light up one by one with a glow layer inside each row (`.pm-glow`), so the
+  highlight always sits exactly on its row.
 - `<html class="motion">` is added in `<head>` unless the visitor prefers reduced motion. Without it
   scenes are not pinned and the markup's natural, fully assembled layout shows. Keep that fallback
   working: every animated element must look right with no inline styles.
