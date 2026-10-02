@@ -17,3 +17,13 @@ python3 -m http.server 8080
 3. Natro DNS'te Vercel'in gösterdiği kayıtları **aynen** ekle. `dashboard` CNAME kaydına dokunma.
 
 Ayrıntılar: [`CLAUDE.md`](CLAUDE.md), [`brand-kit/HUB-SITE.md`](brand-kit/HUB-SITE.md).
+
+## "Açılınca haber ver" e-postası
+`api/notify.js` e-postayı Supabase'e kaydeder ve Resend ile panel kayıt linkini gönderir.
+1. Supabase (dashboard ile aynı proje) → SQL Editor → `supabase/launch_waitlist.sql` dosyasını çalıştır.
+2. resend.com → Domains → `karakutuyoutube.com` ekle, gösterdiği DNS kayıtlarını Natro'ya ekle → API Key oluştur.
+3. Vercel → bu proje → Settings → Environment Variables:
+   `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`,
+   `MAIL_FROM` = `Kara Kutu YouTube Akademisi <bildirim@karakutuyoutube.com>` → sonra Redeploy.
+
+Ayarlar yapılmadan e-posta seçeneği "şu an kapalı" der ve kullanıcıyı WhatsApp'a yönlendirir.

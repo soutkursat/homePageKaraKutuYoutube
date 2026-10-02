@@ -96,7 +96,7 @@
 
   <main>
     <!-- ============ 1 · HERO ============ -->
-    <section class="scene scene-hero" data-scene="hero" style="--len:190vh">
+    <section class="scene scene-hero" data-scene="hero" style="--len:160vh">
       <div class="sticky">
         <div class="hero-box" data-k="box" aria-hidden="true"></div>
         <div class="container hero-inner">
@@ -106,21 +106,80 @@
             <h1 class="display hero-title">Büyüyen kanalların sırrı şans değil, <span class="grad-text">sistem.</span></h1>
             <p class="lead hero-lead">Birebir mentörlük ve YouTube için geliştirdiğimiz araçlar tek yerde. Yüzsüz ve belgesel kanallar için; ilk videondan para kazandığın güne kadar.</p>
             <div class="hero-cta">
-              <a class="btn btn-primary btn-lg" href="#thumbnail">Sistemleri keşfet</a>
+              <a class="btn btn-primary btn-lg" href="#prompt">Sistemleri keşfet</a>
               <a class="btn btn-ghost btn-lg" href="https://dashboard.karakutuyoutube.com">Panele giriş</a>
             </div>
           </div>
           <p class="hero-statement" data-k="statement">
             <span class="eyebrow">Kutunun içinde ne var?</span>
             <span class="hero-statement-big">Üç sistem. <span class="grad-text">Bir mentör.</span></span>
-            <span class="hero-statement-tags"><span>Thumbnail Studio</span><span>Mentörlük Paneli</span><span>Channel Prompt</span></span>
+            <span class="hero-statement-tags"><span>Channel Prompt</span><span>Thumbnail Studio</span><span>Mentörlük Paneli</span></span>
           </p>
         </div>
         <div class="scroll-hint" data-k="hint" aria-hidden="true"><span>Kaydır</span><i></i></div>
       </div>
     </section>
 
-    <!-- ============ 2 · THUMBNAIL STUDIO → DASHBOARD ============ -->
+
+    <!-- ============ 2 · CHANNEL PROMPT ============ -->
+    <section class="scene scene-prompt" data-scene="prompt" style="--len:400vh">
+      <span class="anchor" id="prompt" aria-hidden="true"></span>
+      <div class="sticky">
+        <div class="container stage stage-solo flip">
+          <div class="panel" data-k="text">
+            <div class="panel-head"><span class="eyebrow">01 · Channel Prompt</span><span class="badge badge-soon">Yakında</span></div>
+            <h2 class="h2">Başarılı bir kanalın <span class="grad-text">formülünü çöz.</span></h2>
+            <p class="muted panel-p">Örnek aldığın kanalın en çok izlenen 5 videosunu ver. Channel Prompt bu videoları inceleyip Claude Projesi’ne yapıştıracağın tek bir prompt hazırlar. Sonrasında Claude o kanalın dilini bilerek her yeni videoyu seninle birlikte çıkarır: fikirden başlığa, senaryodan SEO’ya kadar.</p>
+            <ol class="flow" data-k="flow">
+              <li><b>1</b>Kanal</li>
+              <li><b>2</b>5 video</li>
+              <li><b>3</b>Prompt</li>
+              <li><b>4</b>Claude Projesi</li>
+            </ol>
+            <div class="prompt-foot">
+              <span class="pill-status"><i></i>Veriler cihazından çıkmaz</span>
+              <a class="btn btn-ghost" data-notify="Channel Prompt" href="https://wa.me/905377935090?text=Merhaba%2C%20Channel%20Prompt%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">Açılınca haber ver</a>
+            </div>
+          </div>
+
+          <div class="vis vis-prompt" aria-hidden="true">
+            <div class="pmock win" data-k="mock">
+              <div class="win-bar"><i></i><i></i><i></i><span>Channel Prompt</span></div>
+              <div class="pm-body">
+                <div class="pm-chan" data-k="chan">
+                  <span class="pm-av">GT</span>
+                  <div><strong>@gizemlitarih</strong><small>Belgesel · Türkçe · Referans kanal</small></div>
+                  <span class="pm-ok">Eklendi</span>
+                </div>
+                <div class="pm-list" data-k="list">
+                  <div class="pm-row" data-row><i class="c1"></i><span>Titanik’in son 160 dakikası<small>2,4 Mn görüntülenme · transkript</small></span><b></b></div>
+                  <div class="pm-row" data-row><i class="c2"></i><span>Bu adaya girmek yasak<small>1,9 Mn görüntülenme · transkript</small></span><b></b></div>
+                  <div class="pm-row" data-row><i class="c3"></i><span>Piramitlerin altında ne var?<small>1,6 Mn görüntülenme · transkript</small></span><b></b></div>
+                  <div class="pm-row" data-row><i class="c4"></i><span>Çernobil bugün<small>1,2 Mn görüntülenme · transkript</small></span><b></b></div>
+                  <div class="pm-row" data-row><i class="c5"></i><span>Kayıp şehir bulundu<small>980 B görüntülenme · transkript</small></span><b></b></div>
+                  <span class="pm-scan" data-k="scan"></span>
+                </div>
+                <div class="pm-out" data-k="out">
+                  <div class="pm-out-head"><span>Hazır prompt</span><span class="pm-copy" data-k="copy">Kopyalandı</span></div>
+                  <pre data-k="type">Sen @gizemlitarih kanalının içerik stratejistisin.
+
+Önce bu 5 videoyu incele:
+· Başlıklardaki merak boşluğu
+· İlk 30 saniyedeki kanca
+· Anlatım temposu ve bölüm geçişleri
+· Kapaktaki ana vaat
+
+Sonra her yeni videoyu benimle adım adım hazırla: fikir, başlık, senaryo, kapak ve SEO.</pre>
+                </div>
+                <div class="pm-claude" data-k="claude"><span class="pm-spark"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>Claude Projesi’ne eklendi. Artık kanalı tanıyor.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 3 · THUMBNAIL STUDIO → DASHBOARD ============ -->
     <section class="scene scene-products" data-scene="products" style="--len:620vh">
       <span class="anchor" id="thumbnail" aria-hidden="true"></span>
       <div class="sticky">
@@ -128,7 +187,7 @@
 
           <!-- A · text -->
           <div class="panel panel-a" data-k="textA">
-            <div class="panel-head"><span class="eyebrow">01 · Thumbnail Studio</span><span class="badge badge-soon">Yakında</span></div>
+            <div class="panel-head"><span class="eyebrow">02 · Thumbnail Studio</span><span class="badge badge-soon">Yakında</span></div>
             <h2 class="h2">Kaydırırken durduran <span class="grad-text">kapaklar.</span></h2>
             <p class="muted panel-p">İzleyici videonu açmadan önce kapağına bakar ve karar bir saniyede verilir. Thumbnail Studio, videonun konusundan yola çıkıp dikkat çeken kapak fikirleri ve tasarımları çıkarmana yardım edecek. Boş tuvale bakıp ilham beklemek yok.</p>
             <ul class="ticks">
@@ -136,7 +195,7 @@
               <li>Kanalının tarzına uyan tasarımlar</li>
               <li>Yan yana koyup seçebileceğin seçenekler</li>
             </ul>
-            <a class="btn btn-ghost" href="https://wa.me/905377935090?text=Merhaba%2C%20Thumbnail%20Studio%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">Açılınca haber ver</a>
+            <a class="btn btn-ghost" data-notify="Thumbnail Studio" href="https://wa.me/905377935090?text=Merhaba%2C%20Thumbnail%20Studio%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">Açılınca haber ver</a>
           </div>
 
           <!-- A · visual -->
@@ -222,7 +281,7 @@
 
           <!-- B · text -->
           <div class="panel panel-b" data-k="textB">
-            <div class="panel-head"><span class="eyebrow">02 · Mentörlük Paneli</span><span class="badge badge-live">Yayında</span></div>
+            <div class="panel-head"><span class="eyebrow">03 · Mentörlük Paneli</span><span class="badge badge-live">Yayında</span></div>
             <h2 class="h2">Mentörlüğün <span class="grad-text">tek ekranda.</span></h2>
             <p class="muted panel-p">Randevunu al, kanalını tanıt, gerisini panel halletsin. Görüşmen onaylandığında Google Meet linki kendiliğinden oluşur; mentörün de kanalını görüşmeden önce tanımış olur.</p>
             <ul class="ticks">
@@ -236,58 +295,57 @@
         </div>
       </div>
     </section>
-
-    <!-- ============ 3 · CHANNEL PROMPT ============ -->
-    <section class="scene scene-prompt" data-scene="prompt" style="--len:400vh">
-      <span class="anchor" id="prompt" aria-hidden="true"></span>
+    <!-- ============ 4 · KANAL PROFİLİ & TAKİP (Dashboard) ============ -->
+    <section class="scene scene-profile" data-scene="profile" style="--len:380vh">
+      <span class="anchor" id="takip" aria-hidden="true"></span>
       <div class="sticky">
-        <div class="container stage stage-prompt">
+        <div class="container stage stage-solo">
           <div class="panel" data-k="text">
-            <div class="panel-head"><span class="eyebrow">03 · Channel Prompt</span><span class="badge badge-soon">Yakında</span></div>
-            <h2 class="h2">Başarılı bir kanalın <span class="grad-text">formülünü çöz.</span></h2>
-            <p class="muted panel-p">Örnek aldığın kanalın en çok izlenen 5 videosunu ver. Channel Prompt bu videoları inceleyip Claude Projesi’ne yapıştıracağın tek bir prompt hazırlar. Sonrasında Claude o kanalın dilini bilerek her yeni videoyu seninle birlikte çıkarır: fikirden başlığa, senaryodan SEO’ya kadar.</p>
-            <ol class="flow" data-k="flow">
-              <li><b>1</b>Kanal</li>
-              <li><b>2</b>5 video</li>
-              <li><b>3</b>Prompt</li>
-              <li><b>4</b>Claude Projesi</li>
-            </ol>
-            <div class="prompt-foot">
-              <span class="pill-status"><i></i>Veriler cihazından çıkmaz</span>
-              <a class="btn btn-ghost" href="https://wa.me/905377935090?text=Merhaba%2C%20Channel%20Prompt%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">Açılınca haber ver</a>
-            </div>
+            <div class="panel-head"><span class="eyebrow">03 · Kanal profili ve takip</span><span class="badge badge-live">Yayında</span></div>
+            <h2 class="h2">Mentörün kanalını <span class="grad-text">senin kadar tanısın.</span></h2>
+            <p class="muted panel-p">Kanal linkini ve detaylarını panele bir kez girersin: nişin, formatın, yükleme düzenin, video sayın, para kazanıp kazanmadığın ve örnek aldığın rakipler. Mentörün görüşmeden önce hepsini görür; tamamlanan görüşmelerin ve kalan randevu hakların da aynı yerde takip edilir.</p>
+            <ul class="ticks">
+              <li>Birden fazla kanalını ayrı ayrı ekleyebilirsin</li>
+              <li>En fazla 3 rakip kanalı yanına koyarsın</li>
+              <li>En çok zorlandığın konu görüşmenin gündemi olur</li>
+              <li>Görüşme geçmişin ve hakların hep gözünün önünde</li>
+            </ul>
+            <a class="btn btn-primary" href="https://dashboard.karakutuyoutube.com/giris">Panele kayıt ol <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </div>
 
-          <div class="vis vis-prompt" aria-hidden="true">
-            <div class="pmock win" data-k="mock">
-              <div class="win-bar"><i></i><i></i><i></i><span>Channel Prompt</span></div>
-              <div class="pm-body">
-                <div class="pm-chan" data-k="chan">
-                  <span class="pm-av">GT</span>
-                  <div><strong>@gizemlitarih</strong><small>Belgesel · Türkçe · Referans kanal</small></div>
-                  <span class="pm-ok">Eklendi</span>
+          <div class="vis vis-profile" aria-hidden="true">
+            <div class="prof win" data-k="card">
+              <div class="win-bar"><i></i><i></i><i></i><span>Kanallarım</span></div>
+              <div class="pf-body">
+                <div class="pf-link" data-k="link">
+                  <span class="pf-yt"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="4" fill="currentColor"/><path d="m10 9 5 3-5 3z" fill="#fff"/></svg></span>
+                  <span class="pf-url"><span data-k="url">youtube.com/@gizemlitarih</span></span>
+                  <span class="pf-ok" data-k="ok">Kaydedildi</span>
                 </div>
-                <div class="pm-list" data-k="list">
-                  <div class="pm-row" data-row><i class="c1"></i><span>Titanik’in son 160 dakikası<small>2,4 Mn görüntülenme · transkript</small></span><b></b></div>
-                  <div class="pm-row" data-row><i class="c2"></i><span>Bu adaya girmek yasak<small>1,9 Mn görüntülenme · transkript</small></span><b></b></div>
-                  <div class="pm-row" data-row><i class="c3"></i><span>Piramitlerin altında ne var?<small>1,6 Mn görüntülenme · transkript</small></span><b></b></div>
-                  <div class="pm-row" data-row><i class="c4"></i><span>Çernobil bugün<small>1,2 Mn görüntülenme · transkript</small></span><b></b></div>
-                  <div class="pm-row" data-row><i class="c5"></i><span>Kayıp şehir bulundu<small>980 B görüntülenme · transkript</small></span><b></b></div>
-                  <span class="pm-scan" data-k="scan"></span>
+                <div class="pf-tiles">
+                  <div class="pf-tile" data-tile><small>Niş</small><b>Tarih ve gizem</b></div>
+                  <div class="pf-tile" data-tile><small>Format</small><b>Uzun video</b></div>
+                  <div class="pf-tile" data-tile><small>Yükleme</small><b>Salı · Cuma</b></div>
+                  <div class="pf-tile" data-tile><small>Video sayısı</small><b data-k="count">64</b></div>
+                  <div class="pf-tile g" data-tile><small>Para kazanma</small><b>Açık</b></div>
+                  <div class="pf-tile" data-tile><small>Başlangıç</small><b>Mart 2025</b></div>
                 </div>
-                <div class="pm-out" data-k="out">
-                  <div class="pm-out-head"><span>Hazır prompt</span><span class="pm-copy" data-k="copy">Kopyalandı</span></div>
-                  <pre data-k="type">Sen @gizemlitarih kanalının içerik stratejistisin.
-
-Önce bu 5 videoyu incele:
-· Başlıklardaki merak boşluğu
-· İlk 30 saniyedeki kanca
-· Anlatım temposu ve bölüm geçişleri
-· Kapaktaki ana vaat
-
-Sonra her yeni videoyu benimle adım adım hazırla: fikir, başlık, senaryo, kapak ve SEO.</pre>
+                <div class="pf-sub">Rakip kanallar</div>
+                <div class="pf-rivals">
+                  <span data-rival><i class="r1"></i>@rakipkanal1</span>
+                  <span data-rival><i class="r2"></i>@rakipkanal2</span>
+                  <span data-rival><i class="r3"></i>@rakipkanal3</span>
                 </div>
-                <div class="pm-claude" data-k="claude"><span class="pm-spark"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>Claude Projesi’ne eklendi. Artık kanalı tanıyor.</div>
+                <div class="pf-challenge" data-k="challenge"><small>En çok zorlandığın konu</small>İzleyici ilk 30 saniyede videodan çıkıyor.</div>
+                <div class="pf-track" data-k="track">
+                  <div class="pf-track-head"><span>Görüşme geçmişi</span><span class="pf-quota">Randevu hakkın: <b>1</b></span></div>
+                  <div class="pf-line"><i data-k="fill"></i>
+                    <span class="pf-dot" data-dot><b></b><small>1. görüşme</small></span>
+                    <span class="pf-dot" data-dot><b></b><small>2. görüşme</small></span>
+                    <span class="pf-dot" data-dot><b></b><small>3. görüşme</small></span>
+                    <span class="pf-dot next" data-dot><b></b><small>Sıradaki</small></span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -367,16 +425,7 @@ Sonra her yeni videoyu benimle adım adım hazırla: fikir, başlık, senaryo, k
           <p class="muted">Her sistem kendi adresinde çalışır, hepsi aynı tasarım dilini konuşur. Hazır olanı hemen kullan, yakında geleceklerden ilk sen haberdar ol.</p>
         </div>
         <div class="grid-3">
-          <a class="product card glass glow spot reveal" href="https://dashboard.karakutuyoutube.com">
-            <div class="product-top">
-              <span class="product-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 3v3M16 3v3M3 10h18"/></svg></span>
-              <span class="badge badge-live">Yayında</span>
-            </div>
-            <h3>Mentörlük Paneli</h3>
-            <p>Randevunu al, Google Meet linkin otomatik gelsin, kanal bilgilerini mentörünle paylaş. Mentörlüğün tamamı burada döner.</p>
-            <span class="btn btn-primary btn-block">Panele git</span>
-          </a>
-          <a class="product card glass spot reveal" href="https://wa.me/905377935090?text=Merhaba%2C%20Channel%20Prompt%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">
+          <a class="product card glass spot reveal" data-notify="Channel Prompt" href="https://wa.me/905377935090?text=Merhaba%2C%20Channel%20Prompt%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">
             <div class="product-top">
               <span class="product-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></svg></span>
               <span class="badge badge-soon">Yakında</span>
@@ -385,7 +434,7 @@ Sonra her yeni videoyu benimle adım adım hazırla: fikir, başlık, senaryo, k
             <p>Başarılı bir kanalın en çok izlenen 5 videosunu gir; formülünü çözen, Claude Projesi’ne yapıştırılacak hazır promptu al.</p>
             <span class="btn btn-ghost btn-block">Açılınca haber ver</span>
           </a>
-          <a class="product card glass spot reveal" href="https://wa.me/905377935090?text=Merhaba%2C%20Thumbnail%20Studio%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">
+          <a class="product card glass spot reveal" data-notify="Thumbnail Studio" href="https://wa.me/905377935090?text=Merhaba%2C%20Thumbnail%20Studio%20a%C3%A7%C4%B1ld%C4%B1%C4%9F%C4%B1nda%20haber%20verir%20misiniz%3F">
             <div class="product-top">
               <span class="product-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3 16 5-5 4 4 3-3 6 6"/></svg></span>
               <span class="badge badge-soon">Yakında</span>
@@ -393,6 +442,15 @@ Sonra her yeni videoyu benimle adım adım hazırla: fikir, başlık, senaryo, k
             <h3>Thumbnail Studio</h3>
             <p>Videona uygun, tıklanmak için tasarlanmış kapak fikirleri ve tasarımları. Kaydırırken durduran kapaklar için.</p>
             <span class="btn btn-ghost btn-block">Açılınca haber ver</span>
+          </a>
+          <a class="product card glass glow spot reveal" href="https://dashboard.karakutuyoutube.com">
+            <div class="product-top">
+              <span class="product-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M8 3v3M16 3v3M3 10h18"/></svg></span>
+              <span class="badge badge-live">Yayında</span>
+            </div>
+            <h3>Mentörlük Paneli</h3>
+            <p>Randevunu al, Google Meet linkin otomatik gelsin, kanal bilgilerini mentörünle paylaş. Mentörlüğün tamamı burada döner.</p>
+            <span class="btn btn-primary btn-block">Panele git</span>
           </a>
         </div>
       </div>
@@ -424,7 +482,7 @@ Sonra her yeni videoyu benimle adım adım hazırla: fikir, başlık, senaryo, k
           </details>
           <details class="glass reveal">
             <summary>Thumbnail Studio ve Channel Prompt ne zaman açılıyor?</summary>
-            <p>İkisi de üzerinde çalıştığımız sistemler. Hazır olduklarında ilk haber almak istersen WhatsApp’tan “haber ver” demen yeterli.</p>
+            <p>İkisi de üzerinde çalıştığımız sistemler. Hazır olduklarında ilk sen öğrenmek istersen “Açılınca haber ver” butonuna bas; WhatsApp’tan ya da e-postayla haber verelim.</p>
           </details>
           <details class="glass reveal">
             <summary>Verilerim güvende mi?</summary>
@@ -457,6 +515,44 @@ Sonra her yeni videoyu benimle adım adım hazırla: fikir, başlık, senaryo, k
       <span class="foot-links"><a href="https://dashboard.karakutuyoutube.com/gizlilik">Gizlilik</a><a href="https://dashboard.karakutuyoutube.com/kosullar">Kullanım koşulları</a><a href="https://wa.me/905377935090">WhatsApp</a></span>
     </div>
   </footer>
+
+  <!-- ============ HABER VER (modal) ============ -->
+  <dialog class="notify glass" id="notify" aria-labelledby="notify-title">
+    <button class="notify-x" type="button" data-close aria-label="Kapat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <span class="eyebrow">Yakında</span>
+    <h2 id="notify-title" class="notify-title"><span data-product>Bu sistem</span> açılınca ilk sen öğren</h2>
+    <p class="muted">Sana nereden haber verelim? İstediğini seç.</p>
+
+    <div class="notify-opts">
+      <a class="notify-opt" data-wa href="https://wa.me/905377935090" target="_blank" rel="noopener">
+        <span class="no-ic wa"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg></span>
+        <span><b>WhatsApp’tan bildir</b><small>Hazır mesajla sohbet açılır, göndermen yeterli.</small></span>
+      </a>
+      <button class="notify-opt" type="button" data-mail-toggle aria-expanded="false" aria-controls="notify-form">
+        <span class="no-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></span>
+        <span><b>E-postayla haber al</b><small>Panele kayıt linkini hemen gönderelim, açılınca da yazalım.</small></span>
+      </button>
+    </div>
+
+    <form class="notify-form" id="notify-form" hidden novalidate>
+      <label class="field">
+        <span class="field-label">E-posta adresin</span>
+        <input class="input" type="email" name="email" autocomplete="email" inputmode="email" placeholder="ornek@gmail.com" required />
+      </label>
+      <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <button class="btn btn-primary btn-block" type="submit">E-postama gönder</button>
+      <p class="fine">E-postanı sadece bu bildirim ve kayıt linki için kullanırız. <a class="link" href="https://dashboard.karakutuyoutube.com/gizlilik">Gizlilik</a></p>
+      <p class="notify-msg" role="status" aria-live="polite"></p>
+    </form>
+
+    <div class="notify-done" hidden>
+      <span class="nd-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17 19 7"/></svg></span>
+      <b>Listedesin!</b>
+      <p class="muted"><span data-email></span> adresine panele kayıt linkini gönderdik. Birkaç dakika içinde gelmezse spam klasörüne de bak.</p>
+    </div>
+
+    <a class="notify-reg" href="https://dashboard.karakutuyoutube.com/giris">Beklemek istemiyor musun? <b>Şimdi panele kayıt ol</b> <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+  </dialog>
 
   <script src="/assets/site.js" defer></script>
 </body>
