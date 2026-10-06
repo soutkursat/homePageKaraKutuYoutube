@@ -8,12 +8,15 @@
  * - Heights come from the sticky element (100svh), not innerHeight, so the mobile URL bar
  *   appearing/disappearing does not make anything jump.
  * - The hero is not scrubbed: the first scroll plays its zoom as a timed animation.
- * - With prefers-reduced-motion the <html> has no .motion class: nothing is pinned or animated and
- *   the static (fully assembled) layout shows. */
+ * - Scenes always animate (the owner wants them even when the OS asks for reduced motion, e.g. Windows
+ *   "Animation effects" off). In that case <html> gets .calm and only the endless decorative loops stop
+ *   (particles, grid drift, light breathing, eco pulses). ?sade in the URL gives the fully static
+ *   layout (no .motion class: nothing pinned, everything assembled). */
 (function () {
   'use strict'
   var root = document.documentElement
   var MOTION = root.classList.contains('motion')
+  var CALM = root.classList.contains('calm')
   // ARKA KAPI / FALLBACK: false yaparsan (ya da adrese ?klasik eklersen) sahnelerin içindeki bütün
   // animasyonlar eskisi gibi tamamen kaydırmaya bağlı çalışır ve sahneler eski uzunluklarına döner.
   var TIMED_ANIMATIONS = true
@@ -461,7 +464,7 @@
         l.style.strokeDasharray = '1'; l.style.strokeDashoffset = MOTION ? '1' : '0'
         this.svg.appendChild(l); this.lines.push(l)
       }
-      if (MOTION) {
+      if (MOTION && !CALM) {
         for (i = 0; i < this.nodes.length; i++) {
           var d = document.createElementNS(SVGNS, 'circle'); d.setAttribute('r', '3.2'); d.style.opacity = '0'
           this.svg.appendChild(d); this.dots.push(d)
@@ -739,9 +742,9 @@
     var pw = window.innerWidth
     window.addEventListener('resize', function () {
       if (COARSE && window.innerWidth === pw) return   // ignore URL-bar height changes on phones
-      pw = window.innerWidth; size(); if (!MOTION) draw()
+      pw = window.innerWidth; size(); if (!MOTION || CALM) draw()
     })
-    if (MOTION) requestAnimationFrame(ptick)
+    if (MOTION && !CALM) requestAnimationFrame(ptick)
     else draw()
   }
 

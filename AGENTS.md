@@ -52,9 +52,12 @@
 - **Fallback ("arka kapı")**: `TIMED_ANIMATIONS = false` at the top of `site.js`, or `?klasik` in the
   URL, restores the previous fully scroll-scrubbed version (each scene keeps it as `classic`) with
   the original `--len` values. The last commit before timed animations is `7b97b60`.
-- `<html class="motion">` is added in `<head>` unless the visitor prefers reduced motion. Without it
-  scenes are not pinned and the markup's natural, fully assembled layout shows. Keep that fallback
-  working: every animated element must look right with no inline styles.
+- `<html class="motion">` is always added in `<head>` (owner's decision: many desktops report
+  `prefers-reduced-motion` because Windows "Animation effects" is off, and the site looked flat there).
+  With that OS setting the page also gets `.calm`: scenes still animate, only endless decorative loops
+  stop (particles, grid drift, light breathing, eco pulses). `?sade` in the URL skips `.motion`: scenes
+  are not pinned and the natural, fully assembled layout shows. Keep that fallback working: every
+  animated element must look right with no inline styles.
 - In-scene anchors (`#thumbnail`, `#prompt`, `#ekosistem`) are `<span class="anchor">`; JS moves them to
   a readable moment of the scene (`anchors` in each scene).
 
@@ -62,10 +65,10 @@
 - **No theme picker.** The hub is red only; `theme.js` and the blue/mono swatches are intentionally
   left out. Still never hard-code accent colours: use the tokens.
 - **Motion-heavy by design.** DESIGN.md's "no parallax" rule is relaxed here for the landing
-  experience (pinned scenes, scroll-scaled hero, particles). Reduced motion must stay fully supported.
+  experience (pinned scenes, scroll-scaled hero, particles). The static layout stays available via `?sade`.
 - Only true claims: unfinished tools are "Yakında", no invented numbers or testimonials.
 
 ## Before every commit
 - Check 1440×900, 1366×768, 390×844 and 390×664: no horizontal scroll, nothing overlapping.
-- Check with `prefers-reduced-motion: reduce`.
+- Check with `prefers-reduced-motion: reduce` (animated + calm) and with `?sade` (static).
 - WhatsApp `wa.me` texts: plain text, no emoji.
