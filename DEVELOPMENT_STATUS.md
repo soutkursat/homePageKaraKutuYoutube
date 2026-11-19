@@ -45,12 +45,16 @@ missing compared with the default branch.
   1440×900, 1366×768, 390×844, 390×664, plus `?sade`, `?klasik` and `reducedMotion: reduce` (`.calm`).
 - Not re-verified: visual overlap per frame, the 3-identical-steps audit, real phone browsers.
 
-## 4. Unknown (cannot be recovered from the repository)
-- Whether the site is deployed on Vercel and the domains/DNS at Natro are connected.
+## 4. Confirmed by the owner (2026-11-19)
+- Natro DNS is connected and working for the site.
+- No changes were made or requested after 2026-10-07: `d28252a` is the latest state, nothing was lost.
+- Channel Prompt and Thumbnail Studio have **no addresses yet**: keep them "Yakında", linked to the
+  in-page anchors (`#prompt`, `#thumbnail`), with the "Açılınca haber ver" modal.
+
+### Still unknown
 - Whether `launch_waitlist.sql` was run, and whether the Vercel env vars (`SUPABASE_URL`,
-  `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `MAIL_FROM`) and the Resend domain are set up.
-- Any feedback, requests or work from the previous session after 2026-10-07 that was not committed.
-- The final URLs of Channel Prompt and Thumbnail Studio (still "Yakında", linked to in-page anchors).
+  `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `MAIL_FROM`) and the Resend domain are set up
+  (without them the e-mail option answers 503 and points to WhatsApp).
 
 ## 5. Known issues / small inconsistencies (not fixed yet)
 - `brand-kit/HUB-SITE.md` mentions `example/index.html`, which is not in this repo.
@@ -63,7 +67,7 @@ missing compared with the default branch.
   (`/mentorluk`, `/blog`).
 
 ## 6. Recommended next steps
-1. Owner confirms the deployment status (section 4) and anything requested after 2026-10-07.
+1. Owner confirms the e-mail waitlist setup (Supabase SQL, Vercel env vars, Resend domain).
 2. Visual review on the owner's real phone and desktop of the current timed version.
 3. Small doc/comment fixes from section 5 (no behaviour change).
 4. When Channel Prompt / Thumbnail Studio get their subdomains: switch badges to "Yayında", link the
