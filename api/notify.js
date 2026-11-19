@@ -11,8 +11,10 @@
  *   MAIL_FROM                  örn. "Kara Kutu YouTube Akademisi <bildirim@karakutuyoutube.com>"
  *   DASHBOARD_URL (isteğe bağlı) varsayılan https://dashboard.karakutuyoutube.com
  */
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+// no spaces, quotes, angle brackets or list separators: plain addresses only
+const EMAIL_RE = /^[^\s@<>()[\]\\,;:"']+@[^\s@<>()[\]\\,;:"']+\.[^\s@<>()[\]\\,;:"']{2,}$/
 const PRODUCTS = ['Channel Prompt', 'Thumbnail Studio']
+const SITE_HOSTS = ['karakutuyoutube.com', 'www.karakutuyoutube.com']
 const WINDOW_MS = 10 * 60 * 1000
 const MAX_PER_WINDOW = 5
 const hits = new Map() // ip -> [timestamps]; best effort, per function instance
@@ -80,8 +82,24 @@ module.exports = async function handler(req, res) {
     return send(res, 405, { error: 'Sadece POST.' })
   }
 
+  // Browser requests from another site are refused (Origin must match this host), and only JSON is
+  // accepted, so a plain cross-site <form> post cannot reach the mailer.
+  const origin = String(req.headers.origin || '')
+  const host = String(req.headers['x-forwarded-host'] || req.headers.host || '')
+  if (origin) {
+    let oh = ''
+    try { oh = new URL(origin).host } catch (e) { oh = '' }
+    if (!oh || (oh !== host && !SITE_HOSTS.includes(oh))) return send(res, 403, { error: 'İzin verilmeyen istek.' })
+  }
+  if (!/^application\/json\b/i.test(String(req.headers['content-type'] || ''))) {
+    return send(res, 415, { error: 'Geçersiz istek.' })
+  }
+
   let body = req.body
-  if (typeof body === 'string') { try { body = JSON.parse(body) } catch (e) { body = {} } }
+  if (typeof body === 'string') {
+    if (body.length > 2048) return send(res, 413, { error: 'Geçersiz istek.' })
+    try { body = JSON.parse(body) } catch (e) { body = {} }
+  }
   body = body || {}
 
   // honeypot: bots fill the hidden "website" field; pretend success
@@ -92,7 +110,9 @@ module.exports = async function handler(req, res) {
   if (!EMAIL_RE.test(email) || email.length > 254) return send(res, 400, { error: 'Geçerli bir e-posta adresi yaz.' })
   if (!PRODUCTS.includes(product)) return send(res, 400, { error: 'Bilinmeyen sistem.' })
 
-  const ip = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown'
+  // Vercel sets x-real-ip / x-vercel-forwarded-for itself; x-forwarded-for is only a fallback
+  const ip = String(req.headers['x-real-ip'] || req.headers['x-vercel-forwarded-for'] || req.headers['x-forwarded-for'] || '')
+    .split(',')[0].trim() || 'unknown'
   if (limited(ip)) return send(res, 429, { error: 'Çok fazla deneme yaptın. Birkaç dakika sonra tekrar dene.' })
 
   const sbUrl = process.env.SUPABASE_URL
@@ -115,10 +135,10 @@ module.exports = async function handler(req, res) {
       headers: { ...sbHeaders, prefer: 'resolution=ignore-duplicates,return=representation' },
       body: JSON.stringify({ email, product, source: 'hub' }),
     })
-    if (!r.ok) throw new Error(`supabase ${r.status} ${await r.text()}`)
+    if (!r.ok) throw new Error(`supabase ${r.status}`)
     rows = await r.json()
   } catch (err) {
-    console.error('[notify] save failed', err)
+    console.error('[notify] save failed', err && err.message)
     return send(res, 502, { error: 'Kaydedemedik. Biraz sonra tekrar dene ya da WhatsApp’tan yaz.' })
   }
   if (Array.isArray(rows) && rows.length === 0) return send(res, 200, { ok: true, already: true })
@@ -131,9 +151,9 @@ module.exports = async function handler(req, res) {
       headers: { authorization: `Bearer ${resendKey}`, 'content-type': 'application/json' },
       body: JSON.stringify({ from, to: [email], subject: m.subject, html: m.html, text: m.text }),
     })
-    if (!r.ok) throw new Error(`resend ${r.status} ${await r.text()}`)
+    if (!r.ok) throw new Error(`resend ${r.status}`)
   } catch (err) {
-    console.error('[notify] mail failed', err)
+    console.error('[notify] mail failed', err && err.message)
     // roll back so the person can try again
     const q = `email=eq.${encodeURIComponent(email)}&product=eq.${encodeURIComponent(product)}`
     await fetch(`${table}?${q}`, { method: 'DELETE', headers: sbHeaders }).catch(() => {})

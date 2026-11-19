@@ -7,7 +7,8 @@
  *   stutter of uneven touch-scroll deltas on phones and makes slow scrolling buttery.
  * - Heights come from the sticky element (100svh), not innerHeight, so the mobile URL bar
  *   appearing/disappearing does not make anything jump.
- * - The hero is not scrubbed: the first scroll plays its zoom as a timed animation.
+ * - The hero zoom is scrubbed by scroll; at the very top one short wheel/swipe/key glides into
+ *   Channel Prompt (startAdvance).
  * - Scenes always animate (the owner wants them even when the OS asks for reduced motion, e.g. Windows
  *   "Animation effects" off). In that case <html> gets .calm and only the endless decorative loops stop
  *   (particles, grid drift, light breathing, eco pulses). ?sade in the URL gives the fully static
@@ -773,7 +774,7 @@
     var msg = $('.notify-msg', dlg), submitBtn = $('button[type="submit"]', form), emailIn = form.elements.email
     var product = ''
     var doneHtml = $('.notify-done p', dlg).innerHTML
-    var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+    var EMAIL_RE = /^[^\s@<>()[\]\\,;:"']+@[^\s@<>()[\]\\,;:"']+\.[^\s@<>()[\]\\,;:"']{2,}$/ // same rule as api/notify.js
 
     var openNotify = function (name) {
       product = name
@@ -828,6 +829,45 @@
         msg.textContent = err.message || 'Şu an gönderemedik. WhatsApp seçeneğini deneyebilirsin.'
         submitBtn.disabled = false; submitBtn.textContent = 'E-postama gönder'
       })
+    })
+  }
+
+  // =====================================================================
+  // VIDEO PLAYER — cards are real YouTube links (work without JS / ?sade);
+  // with <dialog> support a click opens a youtube-nocookie embed instead.
+  // The iframe is created on open and removed on close (stops playback).
+  // =====================================================================
+  var player = $('#player')
+  if (player && typeof player.showModal === 'function') {
+    var frame = $('.player-frame', player), ptitle = $('.player-title', player), popen = $('[data-open]', player)
+    var lastCard = null
+    var ID_RE = /^[A-Za-z0-9_-]{11}$/
+    document.addEventListener('click', function (e) {
+      var card = e.target.closest && e.target.closest('[data-yt]')
+      if (!card || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+      var id = card.getAttribute('data-yt')
+      if (!ID_RE.test(id)) return
+      e.preventDefault()
+      lastCard = card
+      var title = card.getAttribute('data-title') || 'Video'
+      ptitle.textContent = title
+      popen.href = 'https://www.youtube.com/watch?v=' + id
+      var f = document.createElement('iframe')
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&playsinline=1'
+      f.title = title
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen'
+      f.setAttribute('allowfullscreen', '')
+      f.referrerPolicy = 'strict-origin-when-cross-origin'
+      frame.textContent = ''
+      frame.appendChild(f)
+      player.showModal()
+    })
+    player.addEventListener('click', function (e) {
+      if (e.target === player || e.target.closest('[data-close]')) player.close()
+    })
+    player.addEventListener('close', function () {
+      frame.textContent = ''
+      if (lastCard) { try { lastCard.focus({ preventScroll: true }) } catch (err) { lastCard.focus() } }
     })
   }
 })()

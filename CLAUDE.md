@@ -20,6 +20,12 @@
 - `assets/site.css` — page styles, loaded after `brand-kit/tokens.css`.
 - `assets/site.js` — scroll scene engine, background particles, nav.
 - `assets/og.png` — 1200×630 share image. `assets/favicon.svg`.
+- `assets/img/` — example thumbnails for the Thumbnail Studio and Channel Prompt mock-ups, generated with
+  Higgsfield (`gpt_image_2_6`, 16:9, **no text baked in**; the Turkish titles are HTML overlays so they stay
+  crisp and editable). `*.webp` = 800 px, `*-s.webp` = 176 px for the Channel Prompt rows,
+  `kanal-avatar.webp` = the example channel avatar. They show no real video or channel.
+- `assets/yt/` — self-hosted 640×360 WebP thumbnails of the YouTube videos in the "Ücretsiz dersler"
+  section (`<videoId>.webp`, from `i.ytimg.com/vi/<id>/maxresdefault.jpg`).
 - `api/notify.js` — Vercel Function behind the "Açılınca haber ver" modal: saves the e-mail to
   Supabase and sends the Dashboard register link (`/giris`) with Resend. No dependencies.
   Env vars: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, `MAIL_FROM`
@@ -28,7 +34,7 @@
 
 ## How the scroll scenes work
 - Order: hero → Channel Prompt → Thumbnail Studio → Dashboard (morph) → Kanal profili/takip →
-  Mentörlük → Ekosistem → Sistemler → SSS → CTA.
+  Mentörlük → Ücretsiz dersler (`#dersler`) → Ekosistem → Sistemler → SSS → CTA.
 - Each pinned scene is `<section class="scene" data-scene="…" style="--len:…vh">` with a
   `.sticky` child. `site.js` turns its scroll position into progress `p` (0 → 1) and each scene's
   `update(p)` sets only `transform`/`opacity`. Timings live in those `update` functions.
@@ -66,12 +72,60 @@
 - In-scene anchors (`#thumbnail`, `#prompt`, `#ekosistem`) are `<span class="anchor">`; JS moves them to
   a readable moment of the scene (`anchors` in each scene).
 
+## Ücretsiz dersler (YouTube) section
+- Channel: `youtube.com/@kursatyoutube` (channel id `UCkxMYWUvaXwUkjiREcN48VQ`, RSS:
+  `youtube.com/feeds/videos.xml?channel_id=…` gives titles, dates, descriptions).
+- Layout: one `.vid-feature` + three `.vid-row` (bento on desktop), then four `.vid-mini` in `.vids-more`.
+  Below 720 px `.rail` turns both lists into sideways snap rails that stay inside the page gutter.
+- Each card is a real `<a href="https://www.youtube.com/watch?v=…">` (works with no JS and in `?sade`);
+  `site.js` opens `#player` (`<dialog>`) and injects a `youtube-nocookie.com` iframe on click, and removes
+  it on close. Ctrl/Cmd-click still opens YouTube.
+- Card texts come from the real video descriptions; no view counts (they go stale).
+- Adding a video: save `assets/yt/<id>.webp` (640×360), copy a card, add a `VideoObject` to the JSON-LD
+  `@graph` in `<head>` (name, description, thumbnailUrl, uploadDate, ISO duration).
+
+## Security
+- `vercel.json` sends a strict **Content-Security-Policy** plus HSTS, `X-Frame-Options: DENY`,
+  `Permissions-Policy`, COOP, nosniff and Referrer-Policy. Only `self`, Google Fonts and
+  `www.youtube-nocookie.com` (frames) are allowed.
+- The one inline `<script>` in `<head>` is allowed by its **sha256 hash** in the CSP. If you change that
+  script, recompute the hash and update `vercel.json`, or the page loses `.motion`:
+  `python3 -c "import re,hashlib,base64;s=open('index.html').read();m=re.search(r'<script>(.*?)</script>',s,re.S);print(base64.b64encode(hashlib.sha256(m.group(1).encode()).digest()).decode())"`
+- No inline event handlers (`onclick=` …) and no new external scripts; inline `style` attributes are
+  allowed (`style-src 'unsafe-inline'`) because scenes use `style="--len:…"`.
+- `api/notify.js`: POST + `application/json` only, Origin must be this host (or the apex/www), body ≤ 2 KB,
+  honeypot, plain-address e-mail rule (same regex in `site.js`), per-IP rate limit, unique (email, product),
+  errors are logged without response bodies. The service role key stays server-side.
+- Vercel preview deployments: the Vercel toolbar may be blocked by the CSP there; production is unaffected.
+
 ## Decisions specific to this site (agreed with the owner)
 - **No theme picker.** The hub is red only; `theme.js` and the blue/mono swatches are intentionally
   left out. Still never hard-code accent colours: use the tokens.
 - **Motion-heavy by design.** DESIGN.md's "no parallax" rule is relaxed here for the landing
   experience (pinned scenes, scroll-scaled hero, particles). The static layout stays available via `?sade`.
 - Only true claims: unfinished tools are "Yakında", no invented numbers or testimonials.
+
+## Repository, branches and history
+- GitHub: `soutkursat/homePageKaraKutuYoutube`. There is **no `main` branch**: the repo's default branch
+  is `claude/kind-carson-uolh3c`. Cloud sessions develop on their own `claude/…` branch created from it,
+  push only to that branch and open a pull request into the default branch.
+- If a cloud session fails with "branch or commit not found", the branch it expected was never pushed.
+  Check `git ls-remote origin`, start from the default branch, and never reset/force-push over it.
+- Commit history is the only reliable record of past sessions (each commit body explains the why).
+  Work that was never committed and pushed is lost when a cloud container is reclaimed.
+- Current progress, known issues and next steps: `DEVELOPMENT_STATUS.md`. Update it with every
+  meaningful change. Keep `CLAUDE.md` and `AGENTS.md` identical (same content, two names).
+
+## Local run and checks
+- `python3 -m http.server 8080` in the repo root → http://localhost:8080 (`/api/notify` does not run
+  locally; the modal then falls back to WhatsApp).
+- Quick sanity: `node --check assets/site.js && node --check api/notify.js`.
+- Headless audit: Playwright + preinstalled Chromium; load each viewport (also `?sade`, `?klasik`,
+  `reducedMotion: 'reduce'`), wheel-scroll the whole page, assert no page errors and
+  `scrollWidth === clientWidth`. To test the CSP, serve the folder with a tiny server that sends the
+  `vercel.json` headers and listen for `securitypolicyviolation` events.
+- Network hosts this repo's cloud environment allows for that work: `www.youtube.com`, `i.ytimg.com`,
+  and Higgsfield's CDN `d8j0ntlcm91z4.cloudfront.net` (to download generated images).
 
 ## Before every commit
 - Check 1440×900, 1366×768, 390×844 and 390×664: no horizontal scroll, nothing overlapping.
