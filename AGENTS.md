@@ -73,6 +73,25 @@
   experience (pinned scenes, scroll-scaled hero, particles). The static layout stays available via `?sade`.
 - Only true claims: unfinished tools are "Yakında", no invented numbers or testimonials.
 
+## Repository, branches and history
+- GitHub: `soutkursat/homePageKaraKutuYoutube`. There is **no `main` branch**: the repo's default branch
+  is `claude/kind-carson-uolh3c` (all work up to `d28252a`, 2026-10-07). Cloud sessions develop on their
+  own `claude/…` branch created from it; push only to the branch the session is told to use.
+- If a cloud session fails with "branch or commit not found", the branch it expected was never pushed.
+  Check `git ls-remote origin`, start from the default branch, and never reset/force-push over it.
+- Commit history is the only reliable record of past sessions (each commit body explains the why).
+  Work that was never committed and pushed is lost when a cloud container is reclaimed.
+- Current progress, known issues and next steps: `DEVELOPMENT_STATUS.md`. Update it with every
+  meaningful change. Keep `CLAUDE.md` and `AGENTS.md` identical (same content, two names).
+
+## Local run and checks
+- `python3 -m http.server 8080` in the repo root → http://localhost:8080 (`/api/notify` does not run
+  locally; the modal then falls back to WhatsApp).
+- Quick sanity: `node --check assets/site.js && node --check api/notify.js`.
+- Headless audit: Playwright + preinstalled Chromium; load each viewport (also `?sade`, `?klasik`,
+  `reducedMotion: 'reduce'`), wheel-scroll the whole page, assert no page errors and
+  `scrollWidth === clientWidth`.
+
 ## Before every commit
 - Check 1440×900, 1366×768, 390×844 and 390×664: no horizontal scroll, nothing overlapping.
 - Check with `prefers-reduced-motion: reduce` (animated + calm) and with `?sade` (static).
