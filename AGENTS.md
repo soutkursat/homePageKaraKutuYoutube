@@ -124,8 +124,15 @@
   `reducedMotion: 'reduce'`), wheel-scroll the whole page, assert no page errors and
   `scrollWidth === clientWidth`. To test the CSP, serve the folder with a tiny server that sends the
   `vercel.json` headers and listen for `securitypolicyviolation` events.
-- Network hosts this repo's cloud environment allows for that work: `www.youtube.com`, `i.ytimg.com`,
-  and Higgsfield's CDN `d8j0ntlcm91z4.cloudfront.net` (to download generated images).
+- Cloud environment `homePageKaraKutuYoutube` (personal) allows `www.youtube.com`, `i.ytimg.com`,
+  Higgsfield's CDN `d8j0ntlcm91z4.cloudfront.net`, and GitHub release downloads (`github.com`,
+  `release-assets.githubusercontent.com`, `objects.githubusercontent.com`).
+- Its setup script installs two token savers for Claude Code in every new session (owner's request):
+  **rtk** v0.49.0 (`rtk-ai/rtk`, SHA-256 pinned binary in `/usr/local/bin`, global `rtk hook claude`
+  PreToolUse hook that compresses command output; `rtk gain` shows savings) and the **caveman** plugin
+  (`JuliusBrussee/caveman`, terse replies in the user's language; "stop caveman" / "normal mode" turns it
+  off). These are environment settings, not repo files. caveman's optional runtime (`@caveman-ai/cli setup`)
+  is not installed. Code, commits, docs and PRs are always written in full sentences.
 
 ## Before every commit
 - Check 1440×900, 1366×768, 390×844 and 390×664: no horizontal scroll, nothing overlapping.
