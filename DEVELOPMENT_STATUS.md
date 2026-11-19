@@ -8,6 +8,8 @@ Last updated: 2026-11-19. History before this date was reconstructed from the re
 | Remote | `soutkursat/homePageKaraKutuYoutube` |
 | Default branch (no `main`) | `claude/kind-carson-uolh3c` |
 | Work branch of 2026-11-19 | `claude/sweet-ramanujan-12wwx4` (pull request into the default branch) |
+| Merged | [PR #1](https://github.com/soutkursat/homePageKaraKutuYoutube/pull/1) (thumbnails, lessons, security) |
+| Cloud tooling | rtk v0.49.0 + caveman plugin, installed by the environment setup script (see CLAUDE.md) |
 | Classic-mode reference commit | `7b97b60` (last commit before timed animations) |
 | Deployment | Live on Vercel; Natro DNS connected (confirmed by the owner). |
 | Changes between 2026-10-07 and 2026-11-19 | None (confirmed by the owner). |
