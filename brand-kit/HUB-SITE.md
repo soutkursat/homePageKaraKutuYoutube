@@ -2,7 +2,7 @@
 
 The front door of the brand: it **introduces** Kara Kutu YouTube Akademisi, **showcases** every tool
 and **routes** people to them. It is also the main marketing page, so it must be fast, findable on
-Google and beautiful. A working skeleton is in [`example/index.html`](example/index.html).
+Google and beautiful. The implementation lives in the hub repo itself (`index.html`, `assets/`); see its `CLAUDE.md`.
 
 ## 1. Goals (in order)
 1. A visitor understands in 5 seconds what Kara Kutu is and who it is for.

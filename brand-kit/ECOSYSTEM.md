@@ -16,7 +16,7 @@ assistant working on one) should read this first.
 
 | Product | Address | Status | One-liner |
 |---|---|---|---|
-| **Hub site** | `karakutuyoutube.com` | Planned | Landing + showcase; the gateway to every tool. See [`HUB-SITE.md`](HUB-SITE.md). |
+| **Hub site** | `karakutuyoutube.com` | **Live** | Landing + showcase; the gateway to every tool. See [`HUB-SITE.md`](HUB-SITE.md). |
 | **Mentorship Dashboard** | `dashboard.karakutuyoutube.com` | **Live** | Students book 1:1 mentorship sessions; the mentor manages everything. |
 | **ChannelPrompt** ("Kanal Klonlayıcı") | TBD (e.g. `prompt.karakutuyoutube.com`) | Built (separate project) | Crack a successful channel's formula and turn it into a Claude Project prompt. |
 | **Thumbnail Studio** | TBD (e.g. `thumbnail.karakutuyoutube.com`) | Planned | Thumbnail ideas/designs that get clicks. |
