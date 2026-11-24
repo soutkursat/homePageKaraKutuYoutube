@@ -1,6 +1,6 @@
 # Development status — karakutuyoutube.com (hub site)
 
-Last updated: 2026-11-19. History before this date was reconstructed from the repository and Git log.
+Last updated: 2026-11-24. History before this date was reconstructed from the repository and Git log.
 
 ## 1. Repository state
 | Item | Value |
@@ -18,8 +18,9 @@ Last updated: 2026-11-19. History before this date was reconstructed from the re
 - **Static landing page** (`index.html`, `assets/site.css`, `assets/site.js`), Turkish copy, no build
   step, no dependencies. SEO: title/description, canonical, OG/Twitter (`assets/og.png`), JSON-LD
   `@graph` (Organization, WebSite, 8 × VideoObject), `robots.txt`, `sitemap.xml`, favicon.
-- **Scroll scene engine** and scenes: hero → Channel Prompt → Thumbnail Studio → Dashboard morph →
-  Kanal profili/takip → Mentörlük → **Ücretsiz dersler** → Ekosistem → Sistemler → SSS → CTA.
+- **Scroll scene engine** and scenes (mentorship first since 2026-11-24): hero → Mentörlük Paneli →
+  Kanal profili/takip → Mentörlük → Channel Prompt → **Ücretsiz dersler** → Thumbnail Studio → Ekosistem →
+  Sistemler → SSS → CTA. Hero copy and CTAs ("Mentörlüğü keşfet", WhatsApp) point to mentorship.
 - **Timed in-scene animations**, "no dead scroll" tuning, fallbacks `?klasik`, `?sade`, `.calm`.
 - **Phone-browser compatibility** (no `cqw`/`@container`, `--vw/--vh/--cu`, `.dash.compact`).
 - **"Açılınca haber ver" modal** + `api/notify.js` (Supabase `launch_waitlist` + Resend).
