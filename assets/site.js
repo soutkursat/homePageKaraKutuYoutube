@@ -8,7 +8,7 @@
  * - Heights come from the sticky element (100svh), not innerHeight, so the mobile URL bar
  *   appearing/disappearing does not make anything jump.
  * - The hero zoom is scrubbed by scroll; at the very top one short wheel/swipe/key glides into
- *   Channel Prompt (startAdvance).
+ *   the Mentörlük Paneli scene (startAdvance).
  * - Scenes always animate (the owner wants them even when the OS asks for reduced motion, e.g. Windows
  *   "Animation effects" off). In that case <html> gets .calm and only the endless decorative loops stop
  *   (particles, grid drift, light breathing, eco pulses). ?sade in the URL gives the fully static
@@ -135,7 +135,7 @@
     return Math.min(1, (cell.clientHeight - 8) / card.offsetHeight, cell.clientWidth / card.offsetWidth)
   }
 
-  // ---------- 0 · HERO (scrubbed; the first scroll auto-advances to Channel Prompt) ----------
+  // ---------- 0 · HERO (scrubbed; the first scroll auto-advances to the Mentörlük Paneli scene) ----------
   addScene('hero', {
     span: 0.75,
     init: function () {
@@ -158,7 +158,48 @@
     }
   })
 
-  // ---------- 1 · CHANNEL PROMPT ----------
+  // ---------- 1 · MENTÖRLÜK PANELİ (the dashboard flies in and its pieces assemble) ----------
+  addScene('dash', {
+    enter: 0.55,
+    anchors: { panel: 0.3 },
+    init: function () {
+      var s = this.el
+      this.text = k(s, 'text'); this.card = k(s, 'dash')
+      this.pieces = $$('[data-piece]', s).map(function (el) {
+        var v = el.getAttribute('data-piece').split(',').map(Number)
+        return { el: el, fx: v[0], fy: v[1], r: v[2] }
+      })
+    },
+    measure: function () { this.fit = fitInto(this.card); this.DW = this.card.offsetWidth },
+    classic: function (p) {
+      var self = this
+      var t0 = eo(seg(p, 0, 0.12))
+      show(this.text, t0, 'translate3d(0,' + r3((1 - t0) * 36) + 'px,0)')
+      show(this.card, t0, 'perspective(1400px) translate3d(0,' + r3((1 - t0) * 80) + 'px,0) rotateX(' + r3((1 - t0) * 22) + 'deg) scale(' + r3(lerp(0.9, 1, t0) * this.fit) + ')')
+      var last = this.pieces.length - 1
+      this.pieces.forEach(function (pc, i) {
+        var t = i === last ? eo(seg(p, 0.7, 0.8)) : eo(seg(p, 0.12 + i * 0.05, 0.3 + i * 0.05))
+        var u = 1 - t
+        show(pc.el, t, 'translate3d(' + r3(pc.fx * self.DW * u) + 'px,' + r3(pc.fy * self.DW * u) + 'px,0) rotate(' + r3(pc.r * u) + 'deg) scale(' + r3(lerp(0.9, 1, t)) + ')')
+      })
+    },
+    update: function (p) {
+      var self = this
+      var E = eq(this, p), e = E[0], q = E[1]
+      var t0 = eo(e)
+      show(this.text, t0, 'translate3d(0,' + r3((1 - t0) * 40 - q * 18) + 'px,0)')
+      show(this.card, t0, 'perspective(1400px) translate3d(0,' + r3((1 - t0) * 90 - q * 36) + 'px,0) rotateX(' + r3((1 - t0) * 22) + 'deg) scale(' + r3(lerp(0.9, 1, t0) * this.fit) + ')')
+      var pcT = tw(this, 'pieces', e >= 0.7, 1300)
+      var last = this.pieces.length - 1
+      this.pieces.forEach(function (pc, i) {
+        var t = i === last ? eo(seg(pcT, 0.82, 1)) : eo(seg(pcT, i * 0.1, i * 0.1 + 0.45))
+        var u = 1 - t
+        show(pc.el, t, 'translate3d(' + r3(pc.fx * self.DW * u) + 'px,' + r3(pc.fy * self.DW * u) + 'px,0) rotate(' + r3(pc.r * u) + 'deg) scale(' + r3(lerp(0.9, 1, t)) + ')')
+      })
+    }
+  })
+
+  // ---------- 5 · CHANNEL PROMPT ----------
   addScene('prompt', {
     enter: 0.55,
     anchors: { prompt: 0.3 },
@@ -245,119 +286,59 @@
     }
   })
 
-  // ---------- 2 · THUMBNAIL STUDIO → 3 · DASHBOARD ----------
+  // ---------- 6 · THUMBNAIL STUDIO (the studio card flies in, thumbnails pop out and stay) ----------
   var THUMB_TARGETS = [[-0.5, -0.62, -8], [0.52, -0.58, 7], [-0.52, 0.6, 5], [0.5, 0.64, -6]]
-  addScene('products', {
+  function thumbTf(tg, o, spread, dy) {
+    return 'translate(-50%,-50%) translate3d(' + r3(tg[0] * o * spread) + 'px,' + r3(tg[1] * o * spread - dy) + 'px,0) rotate(' + r3(tg[2] * o) + 'deg) scale(' + r3(lerp(0.3, 1, o)) + ')'
+  }
+  addScene('thumbs', {
     enter: 0.55,
-    anchors: { thumbnail: 0.12 },
-    anchorQ: 0.08,
+    anchors: { thumbnail: 0.3 },
     init: function () {
       var s = this.el
-      this.textA = k(s, 'textA'); this.textB = k(s, 'textB')
-      this.visA = k(s, 'visA'); this.visB = k(s, 'visB')
-      this.studio = k(s, 'studio'); this.dash = k(s, 'dash')
+      this.text = k(s, 'text'); this.vis = k(s, 'vis'); this.studio = k(s, 'studio')
       this.thumbs = $$('[data-thumb]', s)
-      this.pieces = $$('[data-piece]', s).map(function (el) {
-        var v = el.getAttribute('data-piece').split(',').map(Number)
-        return { el: el, fx: v[0], fy: v[1], r: v[2] }
-      })
     },
     measure: function () {
       this.stack = mqStack.matches
       var W = this.studio.offsetWidth, H = this.studio.offsetHeight
-      var cW = this.visA.clientWidth, cH = this.visA.clientHeight
+      var cW = this.vis.clientWidth, cH = this.vis.clientHeight
       var tw = W * (this.stack ? 0.42 : 0.44), th = tw * 9 / 16
       var overX = this.stack ? -6 : 36
       var self = this
-      this.W = W; this.H = H
+      this.H = H
       this.targets = THUMB_TARGETS.map(function (t, i) {
         self.thumbs[i].style.width = tw + 'px'
         var maxX = cW / 2 - tw / 2 + overX, maxY = cH / 2 - th / 2 - 6
         return [clamp(t[0] * W, -maxX, maxX), clamp(t[1] * H, -maxY, maxY), t[2]]
       })
-      this.dx = (this.visB.offsetLeft + this.visB.offsetWidth / 2) - (this.visA.offsetLeft + this.visA.offsetWidth / 2)
-      this.dy = (this.visB.offsetTop + this.visB.offsetHeight / 2) - (this.visA.offsetTop + this.visA.offsetHeight / 2)
-      this.sB = this.dash.offsetWidth / W
-      this.DW = this.dash.offsetWidth
     },
     classic: function (p) {
-      var self = this, W = this.W, H = this.H
-      // A · studio card flies towards the viewer
+      var self = this, H = this.H
       var inA = eo(seg(p, 0, 0.14))
-      var m = eio(seg(p, 0.56, 0.7))
-      var tx = 0, ty = (1 - inA) * H * 0.45, sc = lerp(0.6, 1, inA), rx = (1 - inA) * 34, ry = 0
-      if (!this.stack) { tx += this.dx * m; ty += this.dy * m; sc *= lerp(1, this.sB, m); ry = -m * 12 }
-      else { tx -= m * W * 0.7; ry = m * 32; sc *= lerp(1, 0.86, m) }
-      show(this.studio, inA * (1 - seg(p, 0.62, 0.7)),
-        'perspective(1400px) translate3d(' + r3(tx) + 'px,' + r3(ty) + 'px,0) rotateX(' + r3(rx) + 'deg) rotateY(' + r3(ry) + 'deg) scale(' + r3(sc) + ')')
-
-      // thumbnails pop out of the card, hang around, then dive back in
-      var back = eio(seg(p, 0.48, 0.58))
+      show(this.studio, inA, 'perspective(1400px) translate3d(0,' + r3((1 - inA) * H * 0.45) + 'px,0) rotateX(' + r3((1 - inA) * 34) + 'deg) scale(' + r3(lerp(0.6, 1, inA)) + ')')
       this.thumbs.forEach(function (el, i) {
-        var t = eo(seg(p, 0.15 + i * 0.045, 0.3 + i * 0.045))
-        var o = t * (1 - back)
-        var tg = self.targets[i]
-        show(el, clamp(t * 1.6) * (1 - back),
-          'translate(-50%,-50%) translate3d(' + r3(tg[0] * o) + 'px,' + r3(tg[1] * o) + 'px,0) rotate(' + r3(tg[2] * o) + 'deg) scale(' + r3(lerp(0.3, 1, o)) + ')')
+        var o = eo(seg(p, 0.16 + i * 0.07, 0.34 + i * 0.07))
+        show(el, clamp(o * 1.6), thumbTf(self.targets[i], o, 1 + seg(p, 0.6, 1) * 0.12, 0))
       })
-
-      var aIn = eo(seg(p, 0.04, 0.14)), aOut = seg(p, 0.46, 0.55)
-      show(this.textA, aIn * (1 - aOut), 'translate3d(0,' + r3((1 - aIn) * 36 - aOut * 36) + 'px,0)')
-
-      // B · dashboard shell appears where the card landed, pieces assemble
-      var sh = eo(seg(p, 0.6, 0.7))
-      show(this.dash, sh, this.stack
-        ? 'perspective(1400px) translate3d(' + r3((1 - sh) * W * 0.7) + 'px,0,0) rotateY(' + r3(-(1 - sh) * 32) + 'deg)'
-        : 'none')
-      this.pieces.forEach(function (pc, i) {
-        var last = i === self.pieces.length - 1
-        var t = last ? eo(seg(p, 0.86, 0.93)) : eo(seg(p, 0.63 + i * 0.03, 0.76 + i * 0.03))
-        var u = 1 - t
-        show(pc.el, t, 'translate3d(' + r3(pc.fx * self.DW * u) + 'px,' + r3(pc.fy * self.DW * u) + 'px,0) rotate(' + r3(pc.r * u) + 'deg) scale(' + r3(lerp(0.9, 1, t)) + ')')
-      })
-      var bIn = eo(seg(p, 0.7, 0.8))
-      show(this.textB, bIn, 'translate3d(0,' + r3((1 - bIn) * 36) + 'px,0)')
+      var aIn = eo(seg(p, 0.04, 0.14))
+      show(this.text, aIn, 'translate3d(0,' + r3((1 - aIn) * 36) + 'px,0)')
     },
     update: function (p) {
-      var self = this, W = this.W, H = this.H
+      var self = this, H = this.H
       var E = eq(this, p), e = E[0], q = E[1]
-      // A · studio card flies in while the scene scrolls into view
       var inA = eo(e)
-      var m = eio(seg(q, 0.3, 0.56))
-      var tx = 0, ty = (1 - inA) * H * 0.45 - (1 - m) * q * 40, sc = lerp(0.6, 1, inA), rx = (1 - inA) * 34, ry = 0
-      if (!this.stack) { tx += this.dx * m; ty += this.dy * m; sc *= lerp(1, this.sB, m); ry = -m * 12 }
-      else { tx -= m * W * 0.7; ry = m * 32; sc *= lerp(1, 0.86, m) }
-      show(this.studio, inA * (1 - seg(q, 0.44, 0.56)),
-        'perspective(1400px) translate3d(' + r3(tx) + 'px,' + r3(ty) + 'px,0) rotateX(' + r3(rx) + 'deg) rotateY(' + r3(ry) + 'deg) scale(' + r3(sc) + ')')
-
-      // thumbnails pop out by themselves and drift apart a little while you scroll (parallax)
-      var th = tw(this, 'thumbs', e >= 0.85 && q < 0.3, 900)
-      var spread = 1 + seg(q, 0, 0.3) * 0.12
+      show(this.studio, inA, 'perspective(1400px) translate3d(0,' + r3((1 - inA) * H * 0.45 - q * 36) + 'px,0) rotateX(' + r3((1 - inA) * 34) + 'deg) scale(' + r3(lerp(0.6, 1, inA)) + ')')
+      // thumbnails pop out by themselves, then drift apart a little while you scroll
+      var th = tw(this, 'thumbs', e >= 0.85, 900)
+      // phones: the thumbnails already touch the cell edges, so only desktop lets them drift outwards
+      var spread = 1 + q * (this.stack ? 0 : 0.12), dy = this.stack ? 0 : q * 44
       this.thumbs.forEach(function (el, i) {
         var o = eo(seg(th, i * 0.15, i * 0.15 + 0.55))
-        var tg = self.targets[i]
-        show(el, clamp(o * 1.6),
-          'translate(-50%,-50%) translate3d(' + r3(tg[0] * o * spread) + 'px,' + r3(tg[1] * o * spread - q * 40) + 'px,0) rotate(' + r3(tg[2] * o) + 'deg) scale(' + r3(lerp(0.3, 1, o)) + ')')
+        show(el, clamp(o * 1.6), thumbTf(self.targets[i], o, spread, dy))
       })
-
-      var aIn = eo(seg(e, 0.3, 1)), aOut = seg(q, 0.24, 0.34)
-      show(this.textA, aIn * (1 - aOut), 'translate3d(0,' + r3((1 - aIn) * 40 - q * 30 - aOut * 30) + 'px,0)')
-
-      // B · dashboard shell appears where the card landed, pieces assemble by themselves
-      var sh = eo(seg(q, 0.44, 0.56))
-      var drift = seg(q, 0.56, 1) * 30
-      show(this.dash, sh, this.stack
-        ? 'perspective(1400px) translate3d(' + r3((1 - sh) * W * 0.7) + 'px,' + r3(-drift) + 'px,0) rotateY(' + r3(-(1 - sh) * 32) + 'deg)'
-        : 'translate3d(0,' + r3(-drift) + 'px,0)')
-      var pc = tw(this, 'pieces', q >= 0.5 && sh > 0.6, 1300)
-      var last = this.pieces.length - 1
-      this.pieces.forEach(function (piece, i) {
-        var t = i === last ? eo(seg(pc, 0.82, 1)) : eo(seg(pc, i * 0.1, i * 0.1 + 0.45))
-        var u = 1 - t
-        show(piece.el, t, 'translate3d(' + r3(piece.fx * self.DW * u) + 'px,' + r3(piece.fy * self.DW * u) + 'px,0) rotate(' + r3(piece.r * u) + 'deg) scale(' + r3(lerp(0.9, 1, t)) + ')')
-      })
-      var bIn = eo(seg(q, 0.52, 0.68))
-      show(this.textB, bIn, 'translate3d(0,' + r3((1 - bIn) * 40 - drift * 0.6) + 'px,0)')
+      var aIn = eo(seg(e, 0.3, 1))
+      show(this.text, aIn, 'translate3d(0,' + r3((1 - aIn) * 40 - q * 18) + 'px,0)')
     }
   })
 
@@ -643,13 +624,13 @@
   function remeasure() { measureAll(); targets(); kick() }
   if (MOTION) {
     measureAll(); targets()
-    // ---- intro: at the very top, one short scroll/swipe/key glides to Channel Prompt ----
-    var promptScene = scenes.filter(function (s) { return s.el.getAttribute('data-scene') === 'prompt' })[0]
+    // ---- intro: at the very top, one short scroll/swipe/key glides to the Mentörlük Paneli scene ----
+    var firstScene = scenes.filter(function (s) { return s.el.getAttribute('data-scene') === 'dash' })[0]
     var atTop = function () { return window.scrollY <= 10 && !$('dialog[open]') && !(menu && !menu.hidden) }
     var startAdvance = function () {
-      if (adv || !promptScene) return
-      // land where the channel and the first videos are already on screen
-      var to = TIMED ? promptScene.top + 2 : Math.round(promptScene.top - promptScene.enter * promptScene.H + 0.27 * promptScene.total)
+      if (adv || !firstScene) return
+      // land where the dashboard is already on screen and assembling
+      var to = TIMED ? firstScene.top + 2 : Math.round(firstScene.top - firstScene.enter * firstScene.H + 0.27 * firstScene.total)
       root.style.scrollBehavior = 'auto'   // CSS smooth scrolling would fight the glide
       adv = { from: window.scrollY, to: to, start: performance.now(), dur: COARSE ? 1250 : 1450 }
       kick()

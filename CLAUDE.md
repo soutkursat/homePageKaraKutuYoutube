@@ -33,8 +33,11 @@
 - `supabase/launch_waitlist.sql` — re-runnable table + RLS (no policies = service role only).
 
 ## How the scroll scenes work
-- Order: hero → Channel Prompt → Thumbnail Studio → Dashboard (morph) → Kanal profili/takip →
-  Mentörlük → Ücretsiz dersler (`#dersler`) → Ekosistem → Sistemler → SSS → CTA.
+- Order (mentorship first, owner's decision 2026-11-24): hero → Mentörlük Paneli (`dash`, `#panel`) →
+  Kanal profili/takip (`profile`) → Mentörlük cards (`#mentorluk`) → Channel Prompt (`prompt`) →
+  Ücretsiz dersler (`#dersler`, between the two tools because its videos are about prompts/NotebookLM) →
+  Thumbnail Studio (`thumbs`) → Ekosistem → Sistemler → SSS → CTA. The old combined
+  Thumbnail → Dashboard morph scene (`products`) was split into `dash` and `thumbs`.
 - Each pinned scene is `<section class="scene" data-scene="…" style="--len:…vh">` with a
   `.sticky` child. `site.js` turns its scroll position into progress `p` (0 → 1) and each scene's
   `update(p)` sets only `transform`/`opacity`. Timings live in those `update` functions.
@@ -43,7 +46,7 @@
   bar never causes jumps. Never link anything to scroll with sin/wobble; never animate
   `backdrop-filter`/`filter` inside scenes; the background grid moves with a CSS animation only.
 - The hero zoom is scrubbed by scroll (`span`), and at the very top one short wheel/swipe/key
-  glides the page (eased `window.scrollTo`) into Channel Prompt (`startAdvance`); input is blocked
+  glides the page (eased `window.scrollTo`) into the Mentörlük Paneli scene (`startAdvance`); input is blocked
   only during that ~1.3 s glide.
 - **No container query units (`cqw`/`cqh`) or `@container`.** Some phone browsers (older Chromium,
   vendor browsers) don't support them and the mock-ups fall apart. `units()` in `site.js` sets
@@ -53,7 +56,7 @@
   highlight always sits exactly on its row.
 - Inside scenes, sub-animations are **timed**: scroll only starts them (`tw(scene, key, on, ms)`),
   then they play by themselves in a chain (typing, rows, tiles, pieces, eco lines) and rewind when the
-  visitor scrolls back. Card entrances and the Thumbnail → Dashboard morph stay scroll-driven.
+  visitor scrolls back. Card entrances stay scroll-driven.
   Timed scene lengths come from `data-len-timed`.
 - **No dead scroll** (timed mode): a scene starts when its top enters the viewport (`enter = 1`).
   `eq(scene, p)` gives `e` (0 → 1 while it scrolls into view: content arrives here, so there is never an
@@ -69,7 +72,7 @@
   stop (particles, grid drift, light breathing, eco pulses). `?sade` in the URL skips `.motion`: scenes
   are not pinned and the natural, fully assembled layout shows. Keep that fallback working: every
   animated element must look right with no inline styles.
-- In-scene anchors (`#thumbnail`, `#prompt`, `#ekosistem`) are `<span class="anchor">`; JS moves them to
+- In-scene anchors (`#panel`, `#takip`, `#prompt`, `#thumbnail`, `#ekosistem`) are `<span class="anchor">`; JS moves them to
   a readable moment of the scene (`anchors` in each scene).
 
 ## Ücretsiz dersler (YouTube) section
